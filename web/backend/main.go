@@ -404,6 +404,7 @@ func main() {
 	noBrowser = flag.Bool("no-browser", false, "Do not auto-open browser on startup")
 	lang := flag.String("lang", "", "Language: en (English) or zh (Chinese). Default: auto-detect from system locale")
 	console := flag.Bool("console", false, "Console mode, no GUI")
+	setPassword := flag.String("password", "", "Set dashboard password (min 8 characters) and exit")
 
 	var debug bool
 	flag.BoolVar(&debug, "d", false, "Enable debug logging")
@@ -453,6 +454,25 @@ func main() {
 
 	// Initialize logger
 	picoHome := utils.GetFacetStudioHome()
+
+	if *setPassword != "" {
+		if len(*setPassword) < 8 {
+			fmt.Fprintf(os.Stderr, "Error: password must be at least 8 characters\n")
+			os.Exit(1)
+		}
+		authStore, err := dashboardauth.New(picoHome)
+		if err != nil {
+			fmt.Fprintf(os.Stderr, "Error: could not open auth store: %v\n", err)
+			os.Exit(1)
+		}
+		defer authStore.Close()
+		if err := authStore.SetPassword(context.Background(), *setPassword); err != nil {
+			fmt.Fprintf(os.Stderr, "Error: failed to set password: %v\n", err)
+			os.Exit(1)
+		}
+		fmt.Println("✓ Dashboard password updated successfully.")
+		os.Exit(0)
+	}
 
 	f := filepath.Join(picoHome, logPath, panicFile)
 	panicFunc, err := logger.InitPanic(f)
