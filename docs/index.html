@@ -8,145 +8,151 @@
   <link rel="icon" type="image/svg+xml" href="facet-mark.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #090d16;
-      --card-bg: #111827;
-      --border: #1f293d;
-      --text: #f3f4f6;
-      --text-muted: #94a3b8;
-      --accent: #38bdf8;
-      --primary: #0284c7;
-      --primary-gradient: linear-gradient(135deg, #38bdf8 0%, #2563eb 50%, #7c3aed 100%);
+      --bg: #000000;
+      --card-bg: rgba(255, 255, 255, 0.03);
+      --card-hover: rgba(255, 255, 255, 0.06);
+      --border: rgba(255, 255, 255, 0.09);
+      --border-hover: rgba(255, 255, 255, 0.2);
+      --text: #f5f5f7;
+      --text-secondary: #86868b;
+      --accent: #2997ff;
+      --accent-hover: #0071e3;
+      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
+      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
       background: var(--bg);
       color: var(--text);
-      font-family: 'Inter', system-ui, -apple-system, sans-serif;
-      line-height: 1.6;
+      font-family: var(--font-system);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.5;
       overflow-x: hidden;
     }
-    a { color: var(--accent); text-decoration: none; }
-    a:hover { text-decoration: underline; }
-    code, pre { font-family: 'JetBrains Mono', monospace; font-size: 0.9em; }
-    .container { max-width: 1140px; margin: 0 auto; padding: 0 1.5rem; }
+    a { color: var(--accent); text-decoration: none; transition: color 0.15s ease; }
+    a:hover { color: #6cb8ff; text-decoration: none; }
+    code, pre { font-family: var(--font-mono); font-size: 0.875rem; }
+    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
 
-    /* Header */
+    /* Header / Liquid Glass Nav */
     header {
       border-bottom: 1px solid var(--border);
-      background: rgba(9, 13, 22, 0.85);
-      backdrop-filter: blur(12px);
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(20px) saturate(180%);
+      -webkit-backdrop-filter: blur(20px) saturate(180%);
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 100;
     }
     .nav-wrap {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      height: 4.25rem;
+      height: 3.75rem;
     }
     .brand {
       display: inline-flex;
       align-items: center;
       gap: 0.75rem;
-      font-family: 'Space Grotesk', sans-serif;
-      font-weight: 700;
-      font-size: 1.25rem;
+      font-weight: 600;
+      font-size: 1.15rem;
       color: #fff;
+      letter-spacing: -0.015em;
     }
-    .brand img { height: 28px; width: auto; }
-    nav { display: flex; gap: 1.5rem; align-items: center; font-size: 0.875rem; font-weight: 500; }
-    nav a { color: var(--text-muted); transition: color 0.15s; }
-    nav a:hover { color: #fff; text-decoration: none; }
+    .brand img { height: 26px; width: auto; }
+    nav { display: flex; gap: 1.75rem; align-items: center; font-size: 0.875rem; font-weight: 500; }
+    nav a { color: var(--text-secondary); }
+    nav a:hover { color: #fff; }
     .btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 0.55rem 1.15rem;
-      border-radius: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      transition: all 0.15s;
+      padding: 0.45rem 1rem;
+      border-radius: 980px;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
       cursor: pointer;
     }
     .btn-primary {
-      background: var(--primary-gradient);
-      color: #fff;
-      border: none;
+      background: #0071e3;
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.1);
     }
-    .btn-primary:hover { opacity: 0.92; text-decoration: none; box-shadow: 0 0 20px rgba(56, 189, 248, 0.35); }
-    .btn-secondary {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      color: var(--text);
+    .btn-primary:hover {
+      background: #0077ed;
+      color: #ffffff;
+      box-shadow: 0 0 24px rgba(41, 151, 255, 0.35);
     }
-    .btn-secondary:hover { background: #1e293b; text-decoration: none; }
 
     /* Hero */
     .hero {
       text-align: center;
-      padding: 5.5rem 0 3.5rem;
+      padding: 6rem 0 3.5rem;
       position: relative;
     }
-    .hero::before {
-      content: "";
+    .hero-glow {
       position: absolute;
-      top: 10%;
+      top: 15%;
       left: 50%;
       transform: translateX(-50%);
-      width: 600px;
-      height: 350px;
-      background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, rgba(124, 58, 237, 0.08) 50%, transparent 70%);
-      filter: blur(60px);
+      width: 700px;
+      height: 320px;
+      background: radial-gradient(circle, rgba(41, 151, 255, 0.12) 0%, rgba(99, 102, 241, 0.04) 50%, transparent 70%);
+      filter: blur(80px);
       pointer-events: none;
+      z-index: -1;
     }
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.5rem;
-      background: rgba(56, 189, 248, 0.1);
-      border: 1px solid rgba(56, 189, 248, 0.25);
-      color: var(--accent);
-      padding: 0.25rem 0.75rem;
-      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #d1d1d6;
+      padding: 0.25rem 0.85rem;
+      border-radius: 980px;
       font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.025em;
-      margin-bottom: 1.5rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      margin-bottom: 1.75rem;
     }
     h1 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: clamp(2.25rem, 5vw, 4rem);
-      font-weight: 800;
-      letter-spacing: -0.03em;
-      line-height: 1.15;
-      max-width: 22ch;
+      font-size: clamp(2.4rem, 5.5vw, 4.25rem);
+      font-weight: 700;
+      letter-spacing: -0.035em;
+      line-height: 1.08;
+      max-width: 20ch;
       margin: 0 auto 1.25rem;
+      color: #f5f5f7;
     }
-    .gradient-text {
-      background: var(--primary-gradient);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+    .hero-accent {
+      color: #2997ff;
     }
     .subtitle {
-      max-width: 65ch;
-      margin: 0 auto 2.5rem;
-      font-size: 1.15rem;
-      color: var(--text-muted);
+      max-width: 58ch;
+      margin: 0 auto 2.75rem;
+      font-size: 1.125rem;
+      line-height: 1.6;
+      color: var(--text-secondary);
+      font-weight: 400;
     }
 
-    /* Terminal Box */
+    /* macOS Terminal Window */
     .terminal-card {
-      max-width: 720px;
+      max-width: 680px;
       margin: 0 auto;
-      background: #0b1120;
+      background: rgba(20, 20, 22, 0.85);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
       border: 1px solid var(--border);
-      border-radius: 1rem;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+      border-radius: 14px;
+      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
       overflow: hidden;
       text-align: left;
     }
@@ -154,163 +160,240 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0.75rem 1.25rem;
-      background: #080d19;
+      padding: 0.75rem 1.15rem;
+      background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid var(--border);
     }
     .window-dots {
       display: flex;
-      gap: 0.4rem;
+      gap: 7px;
     }
     .window-dot {
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
     }
-    .dot-red { background: #ef4444; }
-    .dot-yellow { background: #eab308; }
-    .dot-green { background: #22c55e; }
+    .dot-red { background: #ff5f56; }
+    .dot-yellow { background: #ffbd2e; }
+    .dot-green { background: #27c93f; }
     .terminal-tabs {
       display: flex;
-      gap: 0.5rem;
+      gap: 0.25rem;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
     }
     .terminal-tab {
       background: transparent;
       border: none;
-      color: var(--text-muted);
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 0.25rem 0.6rem;
-      border-radius: 0.35rem;
+      color: var(--text-secondary);
+      font-family: var(--font-system);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.25rem 0.65rem;
+      border-radius: 4px;
       cursor: pointer;
+      transition: all 0.15s ease;
     }
     .terminal-tab.active {
-      background: #1e293b;
+      background: rgba(255, 255, 255, 0.12);
       color: #fff;
     }
     .terminal-body {
-      padding: 1.25rem 1.5rem;
+      padding: 1.15rem 1.35rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 1rem;
-      background: #050811;
+      background: rgba(0, 0, 0, 0.6);
     }
     .code-line {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      color: #38bdf8;
+      color: #e2e8f0;
       font-weight: 500;
       overflow-x: auto;
     }
-    .prompt-char { color: #64748b; user-select: none; }
+    .prompt-char { color: #52525b; user-select: none; }
     .copy-btn {
-      background: #1e293b;
-      border: 1px solid #334155;
-      color: #cbd5e1;
-      padding: 0.4rem 0.85rem;
-      border-radius: 0.4rem;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: #f5f5f7;
+      padding: 0.35rem 0.8rem;
+      border-radius: 6px;
+      font-family: var(--font-system);
       font-size: 0.75rem;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
-      shrink-0: 0;
+      flex-shrink: 0;
+      transition: all 0.15s ease;
     }
-    .copy-btn:hover { background: #334155; color: #fff; }
+    .copy-btn:hover { background: rgba(255, 255, 255, 0.14); }
 
-    /* Features Grid */
+    /* Features Section */
     .features {
-      padding: 5rem 0;
+      padding: 5.5rem 0 3.5rem;
     }
     .section-title {
       text-align: center;
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 2rem;
+      font-size: 2.15rem;
       font-weight: 700;
-      margin-bottom: 3rem;
+      letter-spacing: -0.025em;
+      margin-bottom: 0.75rem;
+      color: #f5f5f7;
+    }
+    .section-desc {
+      text-align: center;
+      max-width: 620px;
+      margin: 0 auto 3.5rem;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.6;
     }
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
+      gap: 1.25rem;
     }
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
-      border-radius: 1rem;
+      border-radius: 16px;
       padding: 1.75rem;
-      transition: transform 0.15s, border-color 0.15s;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .card:hover {
+      background: var(--card-hover);
+      border-color: var(--border-hover);
       transform: translateY(-2px);
-      border-color: rgba(56, 189, 248, 0.4);
     }
     .card-icon {
-      width: 44px;
-      height: 44px;
-      border-radius: 0.65rem;
-      background: rgba(56, 189, 248, 0.1);
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      background: rgba(41, 151, 255, 0.1);
       display: grid;
       place-items: center;
       margin-bottom: 1.25rem;
       color: var(--accent);
-      font-size: 1.25rem;
+    }
+    .card-icon svg {
+      width: 20px;
+      height: 20px;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
     }
     .card h3 {
-      font-family: 'Space Grotesk', sans-serif;
-      font-size: 1.2rem;
-      margin-bottom: 0.6rem;
-      color: #fff;
+      font-size: 1.125rem;
+      font-weight: 600;
+      letter-spacing: -0.015em;
+      margin-bottom: 0.5rem;
+      color: #f5f5f7;
     }
     .card p {
-      font-size: 0.9rem;
-      color: var(--text-muted);
+      font-size: 0.875rem;
+      color: var(--text-secondary);
       line-height: 1.6;
     }
 
-    /* Steps */
+    /* Steps Section */
     .steps {
-      padding: 3rem 0 5rem;
+      padding: 4rem 0 5rem;
       border-top: 1px solid var(--border);
     }
     .steps-row {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.5rem;
+      gap: 1.25rem;
       margin-top: 2rem;
     }
     .step-box {
-      background: #0c1220;
+      background: rgba(255, 255, 255, 0.02);
       border: 1px solid var(--border);
-      border-radius: 0.75rem;
+      border-radius: 14px;
       padding: 1.5rem;
     }
     .step-num {
+      font-family: var(--font-mono);
+      font-size: 0.75rem;
+      font-weight: 600;
       color: var(--accent);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.85rem;
-      font-weight: 700;
-      margin-bottom: 0.5rem;
+      letter-spacing: 0.05em;
+      margin-bottom: 0.75rem;
     }
     .step-box h4 {
-      font-size: 1rem;
+      font-size: 1.05rem;
+      font-weight: 600;
+      letter-spacing: -0.01em;
       margin-bottom: 0.5rem;
       color: #fff;
     }
     .step-box p {
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+
+    /* Developer Section */
+    .dev-section {
+      padding: 4.5rem 0 6rem;
+      border-top: 1px solid var(--border);
+    }
+    .dev-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2.5rem;
+    }
+    .dev-card {
+      background: rgba(14, 14, 16, 0.75);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .dev-card-header {
+      padding: 0.85rem 1.25rem;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #f5f5f7;
+    }
+    .dev-card-header svg {
+      width: 16px;
+      height: 16px;
+      stroke: var(--accent);
+      stroke-width: 1.8;
+      fill: none;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+    .dev-card pre {
+      padding: 1.25rem;
+      background: rgba(0, 0, 0, 0.5);
+      margin: 0;
+      line-height: 1.7;
+      color: #d1d5db;
+      overflow-x: auto;
     }
 
     /* Footer */
     footer {
       border-top: 1px solid var(--border);
       padding: 2.5rem 0;
-      color: var(--text-muted);
-      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-size: 0.8125rem;
     }
     .footer-row {
       display: flex;
@@ -321,9 +404,10 @@
     }
 
     @media (max-width: 640px) {
-      .hero { padding: 3.5rem 0 2rem; }
+      .hero { padding: 4rem 0 2rem; }
       .terminal-body { flex-direction: column; align-items: stretch; }
       .code-line { font-size: 0.8rem; }
+      .dev-grid { grid-template-columns: 1fr; }
     }
   </style>
 </head>
@@ -346,12 +430,13 @@
 
   <main>
     <section class="hero container" id="install">
+      <div class="hero-glow"></div>
       <div class="badge">
-        <span>✨ v1.0.0 Now Available</span>
+        <span>Version 1.0.0</span>
       </div>
-      <h1>One Local-First Agent Cockpit. <span class="gradient-text">Zero Config to Chat.</span></h1>
+      <h1>One Local-First Agent Cockpit. <span class="hero-accent">Zero Config to Chat.</span></h1>
       <p class="subtitle">
-        Facet Studio is a complete, local-first agent application with one headed web cockpit and an embeddable in-process kernel. Connect your favorite models, tools, and capability modules in seconds.
+        Facet Studio is a complete, local-first agent application with a headed web cockpit and an embeddable in-process kernel. Connect your models, tools, and capability modules in seconds.
       </p>
 
       <div class="terminal-card">
@@ -380,9 +465,12 @@
 
     <section class="features container" id="features">
       <h2 class="section-title">Built for Real Agentic Work</h2>
+      <p class="section-desc">Designed with intentional craft, strict platform boundaries, and zero extraneous dependencies.</p>
       <div class="grid">
         <div class="card">
-          <div class="card-icon">⚡</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+          </div>
           <h3>Zero-Key Free Chat</h3>
           <p>
             Start chatting immediately on first launch with tested, zero-key anonymous free models (OpenCode Zen, Pollinations). No credit card, no sign-ups, and no API key required.
@@ -390,7 +478,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">🔑</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"></circle><path d="m21 3-9.5 9.5"></path><path d="m15.5 7.5 3 3"></path></svg>
+          </div>
           <h3>Device Auth &amp; Subscriptions</h3>
           <p>
             First-class device sign-in for GitHub Copilot (individual and enterprise), OpenAI Codex, and ChatGPT web sessions. Full multi-turn conversation, streaming, and tool calls supported natively.
@@ -398,7 +488,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">🎯</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
+          </div>
           <h3>Curated Model Shortlist</h3>
           <p>
             Never scroll through 1,000s of raw endpoints. Curate your active chat shortlist with 1-click model buttons directly from any connected provider.
@@ -406,7 +498,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">🧩</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          </div>
           <h3>Embeddable Kernel</h3>
           <p>
             The runtime engine serves as an in-process embeddable kernel for downstream consumers like Facet and Midden, without spawning foreign subprocesses.
@@ -414,7 +508,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">🛡️</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+          </div>
           <h3>Bounded Capability Modules</h3>
           <p>
             Extensible via isolated, detached capability modules with built-in human-in-the-loop approval gates for chargeable or destructive operations.
@@ -422,7 +518,9 @@
         </div>
 
         <div class="card">
-          <div class="card-icon">📦</div>
+          <div class="card-icon">
+            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
+          </div>
           <h3>Zero External Dependencies</h3>
           <p>
             Single-bundle native binary with embedded SQLite, offline vector brand marks, and statically compiled web cockpit. No Python, Node, or Docker needed.
@@ -435,34 +533,36 @@
       <h2 class="section-title">How It Works</h2>
       <div class="steps-row">
         <div class="step-box">
-          <div class="step-num">STEP 01</div>
+          <div class="step-num">01 / SETUP</div>
           <h4>Run the One-Liner</h4>
           <p>Paste the installer command into your shell. It verifies your environment and sets your dashboard password directly in the terminal.</p>
         </div>
         <div class="step-box">
-          <div class="step-num">STEP 02</div>
+          <div class="step-num">02 / PROBE</div>
           <h4>Live Pre-Flight Test</h4>
           <p>The installer pings free zero-key model endpoints in 2 seconds, confirms reachability, and auto-wires a verified working model.</p>
         </div>
         <div class="step-box">
-          <div class="step-num">STEP 03</div>
+          <div class="step-num">03 / LAUNCH</div>
           <h4>Start Chatting</h4>
           <p>Facet Studio launches in your browser on <a href="http://localhost:18800" target="_blank">http://localhost:18800</a> (or clean port 19900) ready to chat on turn 1.</p>
         </div>
       </div>
     </section>
 
-    <section class="features container" id="developers" style="padding-top: 3rem; border-top: 1px solid var(--border);">
+    <section class="dev-section container" id="developers">
       <h2 class="section-title">In-Process Go Embedding &amp; Headless CLI</h2>
-      <p style="text-align: center; max-width: 720px; margin: -1.5rem auto 2.5rem; color: var(--text-muted);">
-        Downstream applications like Facet and Midden embed the runtime directly in Go memory with zero CLI shell-outs. Terminal operators can manage models and run turns entirely headlessly.
+      <p class="section-desc">
+        Downstream applications like Facet and Midden embed the runtime directly in Go memory. Terminal operators can manage models and run turns entirely headlessly.
       </p>
-      <div class="grid" style="grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));">
-        <div class="card" style="padding: 1.5rem;">
-          <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <span>💻</span> Standalone Kernel CLI
-          </h3>
-          <pre style="background: #090d16; border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.7; color: #e2e8f0;"><code><span style="color: #64748b;"># Fresh setup with auto-wired free models</span>
+
+      <div class="dev-grid">
+        <div class="dev-card">
+          <div class="dev-card-header">
+            <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
+            <span>Standalone Kernel CLI</span>
+          </div>
+          <pre><code><span style="color: #64748b;"># Fresh setup with auto-wired free models</span>
 facet-studio-kernel onboard
 
 <span style="color: #64748b;"># Inspect all 50+ curated providers</span>
@@ -475,14 +575,15 @@ facet-studio-kernel model ping opencode-zen
 facet-studio-kernel model auto-free
 
 <span style="color: #64748b;"># Run an agent turn directly in terminal</span>
-facet-studio-kernel agent "Explain this repo"</code></pre>
+facet-studio-kernel agent "Explain this repository"</code></pre>
         </div>
 
-        <div class="card" style="padding: 1.5rem;">
-          <h3 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-            <span>📦</span> In-Process Go Embedding
-          </h3>
-          <pre style="background: #090d16; border: 1px solid var(--border); padding: 1.25rem; border-radius: 0.5rem; overflow-x: auto; font-size: 0.85rem; line-height: 1.7; color: #e2e8f0;"><code><span style="color: #38bdf8;">import</span> (
+        <div class="dev-card">
+          <div class="dev-card-header">
+            <svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
+            <span>In-Process Go Embedding</span>
+          </div>
+          <pre><code><span style="color: #2997ff;">import</span> (
     <span style="color: #a78bfa;">"github.com/xibodev/facet-studio/pkg/agent"</span>
     <span style="color: #a78bfa;">"github.com/xibodev/facet-studio/pkg/config"</span>
 )
@@ -494,7 +595,7 @@ cfg, _ := config.LoadConfig(path)
 loop, _ := agent.NewAgentLoop(cfg, domainTools)
 
 <span style="color: #64748b;">// 3. Stream turns with Go callbacks</span>
-loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #38bdf8;">func</span>(chunk <span style="color: #38bdf8;">string</span>) {
+loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #2997ff;">func</span>(chunk <span style="color: #2997ff;">string</span>) {
     ui.RenderStream(chunk)
 })</code></pre>
         </div>
@@ -504,7 +605,7 @@ loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #38bdf8;">func</spa
 
   <footer>
     <div class="container footer-row">
-      <p>&copy; 2026 Facet Studio contributors. Released under the Apache 2.0 / MIT license.</p>
+      <p>&copy; 2026 Facet Studio contributors. Released under the MIT license.</p>
       <p><a href="https://github.com/xibodev/facet-studio" target="_blank" rel="noopener">GitHub Repository</a></p>
     </div>
   </footer>
@@ -528,7 +629,7 @@ loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #38bdf8;">func</spa
       const cmd = commands[currentOS];
       navigator.clipboard.writeText(cmd).then(() => {
         const textSpan = document.getElementById('copy-text');
-        textSpan.innerText = 'Copied!';
+        textSpan.innerText = 'Copied';
         setTimeout(() => { textSpan.innerText = 'Copy'; }, 2000);
       });
     }

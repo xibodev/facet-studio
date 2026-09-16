@@ -252,7 +252,7 @@ if ($working.Count -gt 0) {
 }
 
 Write-Host "`n──────────────────────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray
-Write-Host "🎉 Facet Studio installation complete!" -ForegroundColor Green
+Write-Host "Facet Studio installation complete!" -ForegroundColor Green
 Write-Host "   URL: http://localhost:$effectivePort" -ForegroundColor Cyan
 Write-Host "   Run anytime from terminal: facet-studio" -ForegroundColor DarkGray
 Write-Host "──────────────────────────────────────────────────────────────────────────────────────────────" -ForegroundColor DarkGray

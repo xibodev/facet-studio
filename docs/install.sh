@@ -151,7 +151,7 @@ echo -e "${GREEN}✓ Wired $STARTING_MODEL into active chat shortlist.${NC}"
 
 echo ""
 echo -e "${GRAY}──────────────────────────────────────────────────────────────────────────────────────────────${NC}"
-echo -e "${GREEN}🎉 Facet Studio installation complete!${NC}"
+echo -e "${GREEN}Facet Studio installation complete!${NC}"
 echo -e "   URL: ${CYAN}http://localhost:${PORT}${NC}"
 echo -e "   Run anytime: ${GRAY}${STUDIO_BIN}${NC}"
 echo -e "${GRAY}──────────────────────────────────────────────────────────────────────────────────────────────${NC}"

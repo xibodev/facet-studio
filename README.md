@@ -21,14 +21,14 @@ Facet Studio is one complete, local-first agent application with a headed web ex
 
 ---
 
-## ⚡ Quick Install
+## Quick Install
 
 ### Windows (PowerShell)
 ```powershell
 irm https://xibodev.github.io/facet-studio/install.ps1 | iex
 ```
 
-### macOS &amp; Linux (Terminal)
+### macOS & Linux (Terminal)
 ```bash
 curl -fsSL https://xibodev.github.io/facet-studio/install.sh | bash
 ```
@@ -37,7 +37,7 @@ The installer verifies your environment, sets your local admin password securely
 
 ---
 
-## 🧠 Architecture
+## Architecture
 
 Facet Studio is organized into three clean layers:
 
@@ -68,7 +68,7 @@ Facet Studio is organized into three clean layers:
 
 ---
 
-## 💻 Headless Kernel CLI Usage
+## Headless Kernel CLI Usage
 
 If you run the standalone runtime `facet-studio-kernel` without a browser:
 
@@ -91,7 +91,7 @@ facet-studio-kernel agent "Summarize the files in this directory"
 
 ---
 
-## 📦 In-Process Go Embedding (Midden &amp; Facet)
+## In-Process Go Embedding (Midden & Facet)
 
 Downstream applications embed the agent runtime directly in Go without running external processes:
 
@@ -137,7 +137,7 @@ func main() {
 
 ---
 
-## 🔨 Building From Source
+## Building From Source
 
 ### Prerequisites
 * Go 1.24+
@@ -154,6 +154,6 @@ go build -tags goolm,stdjson -ldflags "-s -w" -o bin/facet-studio-kernel ./cmd/f
 
 ---
 
-## 📄 License
+## License
 
 Licensed under the MIT License. See [LICENSE](LICENSE) for details.
