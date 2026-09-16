@@ -1,0 +1,30 @@
+{
+  "assertions": [
+    {
+      "expect": {
+        "args": "version",
+        "exit_code": 0,
+        "stdout_contains": "facet-studio"
+      },
+      "id": "kernel-version",
+      "kind": "cli",
+      "target": "kernel"
+    },
+    {
+      "expect": {
+        "args": "model roster",
+        "exit_code": 0,
+        "stdout_contains": "opencode_zen"
+      },
+      "id": "kernel-model-roster",
+      "kind": "cli",
+      "target": "kernel"
+    }
+  ],
+  "schema_version": "1.0.0",
+  "subject": {
+    "id": "facet-studio",
+    "name": "Facet Studio"
+  },
+  "digest": "7ce6cd99e0e6850b59540cf6a822dba469304166c5c9ce6c9308f28a2a42ebe6"
+}

@@ -1,0 +1,26 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-20260916T232703-0erxsn",
+  "status": "PASS",
+  "certifying": true,
+  "run_integrity": "COMPLETE",
+  "contract_digest": "7ce6cd99e0e6850b59540cf6a822dba469304166c5c9ce6c9308f28a2a42ebe6",
+  "causes": [],
+  "assertions": [
+    {
+      "id": "kernel-version",
+      "status": "PASS",
+      "observed": "exit 0"
+    },
+    {
+      "id": "kernel-model-roster",
+      "status": "PASS",
+      "observed": "exit 0"
+    }
+  ],
+  "summary": {
+    "total": 2,
+    "passed": 2,
+    "failed": 0
+  }
+}

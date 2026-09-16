@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Facet Studio Brand Kit Preview</title>
+  <link rel="stylesheet" href="tokens.css">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--facet-color-ink);
+      background: var(--facet-color-canvas);
+      font-family: var(--facet-font-sans);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+    .wrap { max-width: 1040px; margin: 0 auto; }
+    h1, h2, h3 { font-family: var(--facet-font-sans); letter-spacing: -0.03em; }
+    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
+    p.subtitle { color: var(--facet-color-muted); font-size: 1.15rem; margin-bottom: 2.5rem; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
+    .card {
+      background: var(--facet-color-surface);
+      border: 1px solid var(--facet-color-line);
+      border-radius: 12px;
+      padding: 1.5rem;
+      text-align: center;
+    }
+    .card.dark {
+      background: var(--facet-color-navy);
+      color: #fff;
+    }
+    .card img { max-height: 90px; margin: 0 auto 1rem; display: block; }
+    .card span { font-family: var(--facet-font-mono); font-size: 0.8rem; color: var(--facet-color-muted); }
+    .card.dark span { color: #94a3b8; }
+    .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
+    .swatch {
+      background: var(--facet-color-surface);
+      border: 1px solid var(--facet-color-line);
+      border-radius: 8px;
+      overflow: hidden;
+      font-family: var(--facet-font-mono);
+      font-size: 0.8rem;
+    }
+    .swatch-color { height: 70px; }
+    .swatch-info { padding: 0.75rem; }
+    .swatch-name { font-weight: 700; display: block; margin-bottom: 0.2rem; font-family: var(--facet-font-sans); }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Facet Studio Identity System</h1>
+    <p class="subtitle">Brand Kit &amp; Identity Assets for Facet Studio and its In-Process Kernel</p>
+
+    <h2>Logos &amp; Signatures</h2>
+    <div class="grid">
+      <div class="card">
+        <img src="logos/mark.svg" alt="Primary mark">
+        <span>logos/mark.svg</span>
+      </div>
+      <div class="card dark">
+        <img src="logos/mark-inverse.svg" alt="Inverse mark">
+        <span>logos/mark-inverse.svg</span>
+      </div>
+      <div class="card">
+        <img src="logos/lockup.svg" alt="Lockup">
+        <span>logos/lockup.svg</span>
+      </div>
+      <div class="card dark">
+        <img src="logos/lockup-inverse.svg" alt="Lockup inverse">
+        <span>logos/lockup-inverse.svg</span>
+      </div>
+      <div class="card">
+        <img src="logos/wordmark.svg" alt="Wordmark">
+        <span>logos/wordmark.svg</span>
+      </div>
+      <div class="card dark">
+        <img src="logos/wordmark-inverse.svg" alt="Wordmark inverse">
+        <span>logos/wordmark-inverse.svg</span>
+      </div>
+    </div>
+
+    <h2>Core Color Palette</h2>
+    <div class="palette">
+      <div class="swatch">
+        <div class="swatch-color" style="background: #0071E3;"></div>
+        <div class="swatch-info"><span class="swatch-name">Facet Blue</span>#0071E3</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #0F172A;"></div>
+        <div class="swatch-info"><span class="swatch-name">Studio Navy</span>#0F172A</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #7CC4FF;"></div>
+        <div class="swatch-info"><span class="swatch-name">Ice Cyan</span>#7CC4FF</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #1E2F6B;"></div>
+        <div class="swatch-info"><span class="swatch-name">Cobalt Deep</span>#1E2F6B</div>
+      </div>
+      <div class="swatch">
+        <div class="swatch-color" style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0;"></div>
+        <div class="swatch-info"><span class="swatch-name">Studio Canvas</span>#F8FAFC</div>
+      </div>
+    </div>
+
+    <h2>Icons</h2>
+    <div class="grid" style="grid-template-columns: repeat(4, 1fr);">
+      <div class="card"><img src="icons/favicon.svg" width="32" height="32" alt=""><br><span>favicon.svg</span></div>
+      <div class="card"><img src="icons/app-icon.svg" width="64" height="64" alt=""><br><span>app-icon.svg</span></div>
+      <div class="card"><img src="icons/icon-192.svg" width="64" height="64" alt=""><br><span>icon-192.svg</span></div>
+      <div class="card"><img src="icons/icon-512.svg" width="64" height="64" alt=""><br><span>icon-512.svg</span></div>
+    </div>
+  </div>
+</body>
+</html>

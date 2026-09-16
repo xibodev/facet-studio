@@ -1,0 +1,35 @@
+{
+  "run_id": "run-20260916T232703-0erxsn",
+  "entries": [
+    {
+      "kind": "mkdir",
+      "detail": "E:\\open-source-projects\\facet-collection\\facet-studio\\.release-harness\\runs\\run-20260916T232703-0erxsn",
+      "at": "2026-09-16T23:27:03.897Z"
+    },
+    {
+      "kind": "evidence_open",
+      "detail": "E:\\open-source-projects\\facet-collection\\facet-studio\\.release-harness\\runs\\run-20260916T232703-0erxsn\\evidence",
+      "at": "2026-09-16T23:27:03.900Z"
+    },
+    {
+      "kind": "probe",
+      "detail": "kernel-version (cli -> kernel)",
+      "at": "2026-09-16T23:27:03.901Z"
+    },
+    {
+      "kind": "probe",
+      "detail": "kernel-model-roster (cli -> kernel)",
+      "at": "2026-09-16T23:27:03.999Z"
+    },
+    {
+      "kind": "seal",
+      "detail": "E:\\open-source-projects\\facet-collection\\facet-studio\\.release-harness\\runs\\run-20260916T232703-0erxsn\\evidence",
+      "at": "2026-09-16T23:27:04.137Z"
+    },
+    {
+      "kind": "write_manifest",
+      "detail": "E:\\open-source-projects\\facet-collection\\facet-studio\\.release-harness\\runs\\run-20260916T232703-0erxsn\\manifest.json",
+      "at": "2026-09-16T23:27:04.219Z"
+    }
+  ]
+}

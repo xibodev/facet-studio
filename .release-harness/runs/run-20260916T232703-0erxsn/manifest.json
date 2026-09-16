@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-20260916T232703-0erxsn",
+  "contract": {
+    "digest": "7ce6cd99e0e6850b59540cf6a822dba469304166c5c9ce6c9308f28a2a42ebe6",
+    "subject_id": "facet-studio",
+    "requires": []
+  },
+  "bindings": {
+    "digest": "5ae65e61cffdfe258b231377df3c9d5fe080efab6b05dbce153464b435f1c35f",
+    "targets": {
+      "kernel": ".\\bin\\facet-studio-kernel.exe"
+    }
+  },
+  "sources": {
+    "cwd": "E:\\open-source-projects\\facet-collection\\facet-studio"
+  },
+  "evidence": {
+    "manifest_sha256": "f8d537da26b044963169e807541ecde9811e7532805c716739c0182d49e5dd6e"
+  },
+  "certification": {
+    "mode": "CERTIFYING",
+    "eligible": true
+  },
+  "started_at": "2026-09-16T23:27:03.900Z",
+  "completed_at": "2026-09-16T23:27:04.218Z",
+  "verdict": {
+    "digest": "83d73bdcfe1330fecdca553ce429cf8c2728eb1591fde16347f85431b0d342ee",
+    "status": "PASS"
+  },
+  "harness_version": "3.0.0-beta.1"
+}

@@ -1,0 +1,10 @@
+{
+  "schema_version": "1.0.0",
+  "contract_digest": "7ce6cd99e0e6850b59540cf6a822dba469304166c5c9ce6c9308f28a2a42ebe6",
+  "events": [
+    {
+      "by": "operator",
+      "at": "2026-09-16T23:26:06.292Z"
+    }
+  ]
+}

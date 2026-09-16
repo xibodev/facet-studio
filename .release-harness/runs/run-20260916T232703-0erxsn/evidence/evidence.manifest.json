@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "run_id": "run-20260916T232703-0erxsn",
+  "sealed_at": "2026-09-16T23:27:04.157Z",
+  "files": [
+    {
+      "path": "probes/kernel-model-roster.json",
+      "sha256": "e0281da690c1f0c608c8fffa10053854f848c4f4f4f0f94e39490ff436df0498",
+      "bytes": 5485,
+      "category": "probe"
+    },
+    {
+      "path": "probes/kernel-version.json",
+      "sha256": "99b6233fd1f4e6d77ae2192479dc36d5169dc716b38647a691cca98f1c8550c3",
+      "bytes": 2236,
+      "category": "probe"
+    }
+  ]
+}

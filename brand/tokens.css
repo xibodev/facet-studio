@@ -1,0 +1,13 @@
+:root {
+  --facet-color-blue: #0071e3;
+  --facet-color-cobalt: #1e2f6b;
+  --facet-color-ice: #7cc4ff;
+  --facet-color-navy: #0f172a;
+  --facet-color-canvas: #f8fafc;
+  --facet-color-surface: #ffffff;
+  --facet-color-ink: #0f172a;
+  --facet-color-muted: #64748b;
+  --facet-color-line: #e2e8f0;
+  --facet-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
+  --facet-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+}

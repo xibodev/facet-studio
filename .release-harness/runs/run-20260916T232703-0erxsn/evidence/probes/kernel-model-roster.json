@@ -1,0 +1,23 @@
+{
+  "assertion": "kernel-model-roster",
+  "id": "kernel-model-roster",
+  "passed": true,
+  "cause": "NONE",
+  "observed": "exit 0",
+  "detail": {
+    "location": ".\\bin\\facet-studio-kernel.exe",
+    "exit_code": 0,
+    "expected_exit_code": 0,
+    "executable_requested": ".\\bin\\facet-studio-kernel.exe",
+    "executable_spawned": ".\\bin\\facet-studio-kernel.exe",
+    "argv": [
+      "model",
+      "roster"
+    ],
+    "shell": false,
+    "stdout": "\r\n\u001b[1;38;2;62;93;185m███████╗ █████╗  ██████╗███████╗████████╗\u001b[1;38;2;213;70;70m ███████╗████████╗██╗   ██╗██████╗ ██╗ ██████╗ \n\u001b[1;38;2;62;93;185m██╔════╝██╔══██╗██╔════╝██╔════╝╚══██╔══╝\u001b[1;38;2;213;70;70m ██╔════╝╚══██╔══╝██║   ██║██╔══██╗██║██╔═══██╗\n\u001b[1;38;2;62;93;185m█████╗  ███████║██║     █████╗     ██║   \u001b[1;38;2;213;70;70m ███████╗   ██║   ██║   ██║██║  ██║██║██║   ██║\n\u001b[1;38;2;62;93;185m██╔══╝  ██╔══██║██║     ██╔══╝     ██║   \u001b[1;38;2;213;70;70m ╚════██║   ██║   ██║   ██║██║  ██║██║██║   ██║\n\u001b[1;38;2;62;93;185m██║     ██║  ██║╚██████╗███████╗   ██║   \u001b[1;38;2;213;70;70m ███████║   ██║   ╚██████╔╝██████╔╝██║╚██████╔╝\n\u001b[1;38;2;62;93;185m╚═╝     ╚═╝  ╚═╝ ╚═════╝╚══════╝   ╚═╝   \u001b[1;38;2;213;70;70m ╚══════╝   ╚═╝    ╚═════╝ ╚═════╝ ╚═╝ ╚═════╝ \n \u001b[0m\r\nID                        DISPLAY NAME                     ADAPTER                STATUS\n--                        ------------                     -------                ------\nai_studio                 Google AI Studio                                        available\nalibaba-coding            Alibaba Coding Plan              openai-compatible      available\nalibaba-coding-anthropic  Alibaba Coding Plan (Anthropic)  anthropic-compatible   available\nanthropic                 Anthropic                        anthropic-compatible   available\nanthropic-messages        Anthropic Messages               anthropic-compatible   available\nantigravity               Google Code Assist                                      available\navian                     Avian                            openai-compatible      available\nazure                     Azure OpenAI                                            available\nazure_openai              Azure OpenAI                     openai-compatible      available\nbedrock                   Amazon Bedrock                   openai-compatible      available\ncerebras                  Cerebras                         openai-compatible      available\nclaude-cli                Claude CLI                                              available\nclaude_code               Claude Code                      anthropic-compatible   available\ncodex-cli                 Codex CLI                                               available\ncustom_anthropic          Custom Anthropic-compatible      anthropic-compatible   available\ncustom_openai             Custom OpenAI-compatible         openai-compatible      available\ndeepseek                  DeepSeek                         openai-compatible      available\nedge_tts                  Edge TTS                         openai-compatible      available\nelevenlabs                ElevenLabs ASR                                          available\ngemini                    Google Gemini                    openai-compatible      available\ngithub-copilot            GitHub Copilot                   github-copilot-native  available\ngithub_copilot            GitHub Copilot                   openai-compatible      available\ngpt4free                  GPT4Free                         openai-compatible      available\ngroq                      Groq                             openai-compatible      available\nkilo_code                 Kilo Code                        openai-compatible      configured (2)\nlitellm                   LiteLLM                          openai-compatible      available\nllm7                      LLM7.io                          openai-compatible      configured (3)\nlmstudio                  LM Studio                        openai-compatible      available\nlocalai                   LocalAI                          openai-compatible      available\nlongcat                   LongCat                          openai-compatible      available\nmimo                      Xiaomi MiMo                      openai-compatible      available\nminimax                   MiniMax                          openai-compatible      available\nmistral                   Mistral AI                       openai-compatible      available\nmodel",
+    "stderr": "",
+    "expected_stdout_contains": "opencode_zen",
+    "subject_reached": true
+  }
+}
