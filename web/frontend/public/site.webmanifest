@@ -1,0 +1,15 @@
+{
+  "name": "Facet Studio",
+  "short_name": "Facet Studio",
+  "description": "Local-first agentic chat that expands with detached modules.",
+  "icons": [
+    { "src": "/facet-mark.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "/web-app-manifest-192x192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "/web-app-manifest-512x512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "/web-app-manifest-512x512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ],
+  "theme_color": "#3e5db9",
+  "background_color": "#0f1115",
+  "display": "standalone",
+  "start_url": "/"
+}
