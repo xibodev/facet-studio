@@ -71,6 +71,30 @@ func onboard(encrypt bool) {
 		}
 	} else {
 		cfg = config.DefaultConfig()
+		cfg.ProviderInstances = []*config.ProviderInstanceConfig{
+			{
+				ID:           "opencode-zen",
+				ProviderKind: "opencode_zen",
+				Adapter:      "openai-compatible",
+				Protocol:     "openai",
+				Endpoint:     "https://opencode.ai/zen/v1",
+				State:        config.ProviderInstanceStateEnabled,
+			},
+			{
+				ID:           "pollinations",
+				ProviderKind: "pollinations",
+				Adapter:      "openai-compatible",
+				Protocol:     "openai",
+				Endpoint:     "https://genai.pollinations.ai/v1",
+				State:        config.ProviderInstanceStateEnabled,
+			},
+		}
+		cfg.ActiveModels = []string{
+			"opencode-zen/ling-3.0-flash-fin-free",
+			"pollinations/openai-fast",
+			"pollinations/deepseek-reasoner",
+		}
+		cfg.Agents.Defaults.ModelName = "opencode-zen/ling-3.0-flash-fin-free"
 	}
 	if err := config.SaveConfig(configPath, cfg); err != nil {
 		fmt.Printf("Error saving config: %v\n", err)

@@ -8,27 +8,16 @@ import (
 	"net/url"
 	"sort"
 	"strings"
-	"time"
 
-	llmgwproviders "github.com/xibodev/llmgw-core/providers"
 	"github.com/xibodev/facet-studio/pkg/auth"
 	"github.com/xibodev/facet-studio/pkg/config"
+	"github.com/xibodev/facet-studio/pkg/modelservice"
 	"github.com/xibodev/facet-studio/pkg/providers"
 )
 
 // ProviderCatalogSyncInput is the complete server-owned connection description
 // supplied to a catalog driver. It is never populated from request fields.
-type ProviderCatalogSyncInput struct {
-	InstanceID        string
-	ProviderKind      string
-	Adapter           string
-	Protocol          string
-	Endpoint          string
-	AuthConnectionRef string
-	Headers           map[string]string
-	Settings          map[string]any
-	secret            string
-}
+type ProviderCatalogSyncInput = modelservice.ProviderCatalogSyncInput
 
 type providerInstanceResponse struct {
 	ID             string                       `json:"id"`
@@ -263,7 +252,7 @@ func (h *Handler) handleSyncProviderInstanceCatalog(w http.ResponseWriter, r *ht
 			http.Error(w, "provider credential resolver is not configured", http.StatusInternalServerError)
 			return
 		}
-		input.secret, err = h.providerCredentialResolver(instance.AuthConnectionRef)
+		input.Secret, err = h.providerCredentialResolver(instance.AuthConnectionRef)
 		if err != nil {
 			http.Error(w, fmt.Sprintf("Failed to resolve provider credential: %v", err), http.StatusBadGateway)
 			return
@@ -294,201 +283,34 @@ func (h *Handler) handlePingProviderInstance(w http.ResponseWriter, r *http.Requ
 	}
 	instance := cfg.ProviderInstances[index]
 
-	start := time.Now()
-
-	// If it supports catalog sync, use providerCatalogSync to test credentials + reachability
-	if catalogSyncAdapterSupported(instance.Adapter) && h.providerCatalogSync != nil {
-		input := catalogSyncInputFromInstance(instance)
-		if instance.Adapter != "github-copilot-native" && h.providerCredentialResolver != nil && instance.AuthConnectionRef != "" {
-			input.secret, _ = h.providerCredentialResolver(instance.AuthConnectionRef)
-		}
-		models, syncErr := h.providerCatalogSync(r.Context(), input)
-		latencyMs := time.Since(start).Milliseconds()
-		if syncErr != nil {
-			writeJSON(w, http.StatusOK, map[string]any{
-				"ok":          false,
-				"instance_id": instance.ID,
-				"latency_ms":  latencyMs,
-				"status":      "unreachable",
-				"error":       syncErr.Error(),
-			})
-			return
-		}
-		writeJSON(w, http.StatusOK, map[string]any{
-			"ok":          true,
-			"instance_id": instance.ID,
-			"latency_ms":  latencyMs,
-			"model_count": len(models),
-			"status":      "reachable",
-		})
-		return
+	secret := ""
+	if instance.Adapter != "github-copilot-native" && h.providerCredentialResolver != nil && instance.AuthConnectionRef != "" {
+		secret, _ = h.providerCredentialResolver(instance.AuthConnectionRef)
 	}
-
-	// For general HTTP endpoints
-	if strings.TrimSpace(instance.Endpoint) != "" {
-		req, reqErr := http.NewRequestWithContext(r.Context(), http.MethodGet, instance.Endpoint, nil)
-		if reqErr != nil {
-			writeJSON(w, http.StatusOK, map[string]any{
-				"ok":          false,
-				"instance_id": instance.ID,
-				"latency_ms":  0,
-				"status":      "unreachable",
-				"error":       reqErr.Error(),
-			})
-			return
-		}
-		client := h.providerCatalogHTTPClient
-		if client == nil {
-			client = http.DefaultClient
-		}
-		resp, respErr := client.Do(req)
-		latencyMs := time.Since(start).Milliseconds()
-		if respErr != nil {
-			writeJSON(w, http.StatusOK, map[string]any{
-				"ok":          false,
-				"instance_id": instance.ID,
-				"latency_ms":  latencyMs,
-				"status":      "unreachable",
-				"error":       respErr.Error(),
-			})
-			return
-		}
-		_ = resp.Body.Close()
-		writeJSON(w, http.StatusOK, map[string]any{
-			"ok":          true,
-			"instance_id": instance.ID,
-			"latency_ms":  latencyMs,
-			"status":      "reachable",
-		})
-		return
-	}
-
-	writeJSON(w, http.StatusOK, map[string]any{
-		"ok":          true,
-		"instance_id": instance.ID,
-		"latency_ms":  time.Since(start).Milliseconds(),
-		"status":      "configured",
-	})
+	res := modelservice.PingWithSync(r.Context(), instance, secret, h.providerCatalogHTTPClient, h.providerCatalogSync)
+	writeJSON(w, http.StatusOK, res)
 }
 
 func (h *Handler) handleAutoConnectFreeProviders(w http.ResponseWriter, r *http.Request) {
-	cfg, err := config.LoadConfig(h.configPath)
+	result, err := modelservice.AutoConnectFreeAndSave(r.Context(), h.configPath, h.providerCatalogHTTPClient, h.providerCatalogSync)
 	if err != nil {
-		http.Error(w, fmt.Sprintf("Failed to load config: %v", err), http.StatusInternalServerError)
+		http.Error(w, fmt.Sprintf("Failed to auto-connect free providers: %v", err), http.StatusInternalServerError)
 		return
 	}
 
-	profiles := llmgwproviders.AnonymousProviderProfiles()
-	existingIDs := make(map[string]bool)
-	for _, inst := range cfg.ProviderInstances {
-		if inst != nil {
-			existingIDs[inst.ID] = true
-		}
-	}
-
-	connected := 0
-	verified := 0
-	var connectedInstances []string
-
-	for _, profile := range profiles {
-		instID := profile.ProviderID
-		if instID == "" {
-			instID = profile.RegistryID
-		}
-		if !existingIDs[instID] {
-			newInstance := &config.ProviderInstanceConfig{
-				ID:           instID,
-				ProviderKind: profile.RegistryID,
-				Adapter:      "openai-compatible",
-				Protocol:     "openai",
-				Endpoint:     profile.BaseURL,
-				State:        config.ProviderInstanceStateEnabled,
-			}
-			cfg.ProviderInstances = append(cfg.ProviderInstances, newInstance)
-			existingIDs[instID] = true
-			connected++
-			connectedInstances = append(connectedInstances, instID)
-		}
-
-		if h.providerCatalogSync != nil {
-			idx := providerInstanceIndex(cfg, instID)
-			if idx >= 0 {
-				input := catalogSyncInputFromInstance(cfg.ProviderInstances[idx])
-				models, syncErr := h.providerCatalogSync(r.Context(), input)
-				if syncErr == nil && len(models) > 0 {
-					freeModels := filterAnonymousFreeModels(profile.RegistryID, models)
-					_ = saveProviderInstanceCatalog(cfg.ProviderInstances[idx], freeModels)
-					verified++
-					for _, m := range freeModels {
-						exact := instID + "/" + m.ID
-						alreadyActive := false
-						for _, existing := range cfg.ActiveModels {
-							if existing == exact {
-								alreadyActive = true
-								break
-							}
-						}
-						if !alreadyActive {
-							cfg.ActiveModels = append(cfg.ActiveModels, exact)
-						}
-					}
-				}
-			}
-		}
-	}
-
-	if connected > 0 {
-		if err := config.SaveConfig(h.configPath, cfg); err != nil {
-			http.Error(w, fmt.Sprintf("Failed to save config: %v", err), http.StatusInternalServerError)
-			return
-		}
-	}
-
 	writeJSON(w, http.StatusOK, map[string]any{
-		"ok":        true,
-		"total":     len(profiles),
-		"connected": connected,
-		"verified":  verified,
-		"instances": connectedInstances,
+		"ok":        result.OK,
+		"total":     result.Total,
+		"connected": result.Connected,
+		"verified":  result.Verified,
+		"instances": result.Instances,
 	})
 }
 
-var anonymousFreeModelIDs = map[string][]string{
-	"opencode_zen":     {"ling-3.0-flash-fin-free", "muse-spark-1.2-contributor-free", "nemotron-3.5-lightning-free"},
-	"kilo_code":        {"kilo-auto/free", "liquid/lfm-2.5-2.6b:free", "cohere/north-mini-code:free"},
-	"llm7":             {"codestral-latest", "mistral-Nemo-Instruct-2407", "minimax-m2.7"},
-	"ovh_ai_endpoints": {"Qwen3.8-27B", "Mistral-Nemo-Instruct-2407", "gpt-oss-20b"},
-	"pollinations":     {"openai-fast"},
-}
+var anonymousFreeModelIDs = modelservice.AnonymousFreeModelIDs
 
 func filterAnonymousFreeModels(providerKind string, models []CatalogModel) []CatalogModel {
-	preferred, hasPreferred := anonymousFreeModelIDs[providerKind]
-	filtered := make([]CatalogModel, 0)
-	for _, m := range models {
-		idLower := strings.ToLower(m.ID)
-		if strings.HasSuffix(idLower, "-free") || strings.HasSuffix(idLower, "/free") || strings.HasSuffix(idLower, ":free") {
-			filtered = append(filtered, m)
-			continue
-		}
-		if hasPreferred {
-			for _, pref := range preferred {
-				if strings.EqualFold(m.ID, pref) {
-					filtered = append(filtered, m)
-					break
-				}
-			}
-		}
-	}
-	if len(filtered) > 0 {
-		return filtered
-	}
-	if hasPreferred {
-		for _, pref := range preferred {
-			filtered = append(filtered, CatalogModel{ID: pref})
-		}
-		return filtered
-	}
-	return models
+	return modelservice.FilterAnonymousFreeModels(providerKind, models)
 }
 
 func resolveProviderCredentialReference(ref string) (string, error) {
@@ -528,24 +350,7 @@ func catalogSyncAdapterSupported(adapter string) bool {
 }
 
 func catalogSyncInputFromInstance(instance *config.ProviderInstanceConfig) ProviderCatalogSyncInput {
-	headers := make(map[string]string, len(instance.Headers))
-	for name, value := range instance.Headers {
-		headers[name] = value
-	}
-	settings := make(map[string]any, len(instance.Settings))
-	for name, value := range instance.Settings {
-		settings[name] = value
-	}
-	return ProviderCatalogSyncInput{
-		InstanceID:        instance.ID,
-		ProviderKind:      instance.ProviderKind,
-		Adapter:           instance.Adapter,
-		Protocol:          instance.Protocol,
-		Endpoint:          instance.Endpoint,
-		AuthConnectionRef: instance.AuthConnectionRef,
-		Headers:           headers,
-		Settings:          settings,
-	}
+	return modelservice.CatalogSyncInputFromInstance(instance)
 }
 
 func safeProviderInstanceResponse(instance *config.ProviderInstanceConfig) providerInstanceResponse {

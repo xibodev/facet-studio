@@ -54,7 +54,7 @@ func TestNativeGitHubCopilotInstanceSyncNeedsNoEndpointOrCredential(t *testing.T
 		return "", nil
 	}
 	h.providerCatalogSync = func(_ context.Context, input ProviderCatalogSyncInput) ([]CatalogModel, error) {
-		if input.Endpoint != "" || input.AuthConnectionRef != "" || input.secret != "" {
+		if input.Endpoint != "" || input.AuthConnectionRef != "" || input.Secret != "" {
 			t.Fatalf("native input contains endpoint or credential: %#v", input)
 		}
 		return []CatalogModel{{ID: "gpt-fixture", Extra: map[string]any{"native_adapter": true}}}, nil

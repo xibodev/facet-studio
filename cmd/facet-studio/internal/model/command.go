@@ -58,6 +58,9 @@ Note: 'local-model' is a special value for using a local VLLM server
 	}
 
 	cmd.AddCommand(newAddCommand())
+	cmd.AddCommand(newAutoFreeCommand())
+	cmd.AddCommand(newPingCommand())
+	cmd.AddCommand(newRosterCommand())
 
 	return cmd
 }
@@ -80,32 +83,61 @@ func showCurrentModel(cfg *config.Config) {
 }
 
 func listAvailableModels(cfg *config.Config) {
-	if len(cfg.ModelList) == 0 {
-		fmt.Println("  No models configured in model_list")
-		return
-	}
-
 	defaultModel := cfg.Agents.Defaults.ModelName
 
-	for _, model := range cfg.ModelList {
-		marker := "  "
-		if model.ModelName == defaultModel {
-			marker = "> "
+	if len(cfg.ActiveModels) > 0 {
+		fmt.Println("  Active / Free Models:")
+		for _, m := range cfg.ActiveModels {
+			marker := "  "
+			if m == defaultModel {
+				marker = "> "
+			}
+			fmt.Printf("%s- %s\n", marker, m)
 		}
-		if !model.Enabled {
-			continue
+	}
+
+	if len(cfg.ModelList) > 0 {
+		if len(cfg.ActiveModels) > 0 {
+			fmt.Println("\n  Configured Catalog Models:")
 		}
-		fmt.Printf("%s- %s (%s)\n", marker, model.ModelName, model.Model)
+		for _, model := range cfg.ModelList {
+			marker := "  "
+			if model.ModelName == defaultModel {
+				marker = "> "
+			}
+			if !model.Enabled {
+				continue
+			}
+			fmt.Printf("%s- %s (%s)\n", marker, model.ModelName, model.Model)
+		}
+	} else if len(cfg.ActiveModels) == 0 {
+		fmt.Println("  No models configured in model_list")
 	}
 }
 
 func setDefaultModel(configPath string, cfg *config.Config, modelName string) error {
-	// Validate that the model exists in model_list
+	// Validate that the model exists in model_list, active_models, or provider_instances
 	modelFound := false
 	for _, model := range cfg.ModelList {
 		if model.Enabled && model.ModelName == modelName {
 			modelFound = true
 			break
+		}
+	}
+	if !modelFound {
+		for _, active := range cfg.ActiveModels {
+			if active == modelName {
+				modelFound = true
+				break
+			}
+		}
+	}
+	if !modelFound {
+		for _, inst := range cfg.ProviderInstances {
+			if inst != nil && inst.ID == modelName {
+				modelFound = true
+				break
+			}
 		}
 	}
 

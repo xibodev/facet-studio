@@ -1,126 +1,52 @@
 package api
 
 import (
-	"crypto/sha256"
 	"encoding/json"
 	"fmt"
 	"net/http"
-	"os"
-	"path/filepath"
 	"strings"
 	"time"
 
 	"github.com/xibodev/facet-studio/pkg/config"
-	"github.com/xibodev/facet-studio/pkg/fileutil"
+	"github.com/xibodev/facet-studio/pkg/modelservice"
 	"github.com/xibodev/facet-studio/pkg/providers"
 )
 
 // CatalogModel represents a single model entry in a saved catalog.
-type CatalogModel struct {
-	ID      string         `json:"id"`
-	OwnedBy string         `json:"owned_by,omitempty"`
-	Extra   map[string]any `json:"extra,omitempty"`
-}
+type CatalogModel = modelservice.CatalogModel
 
 // CatalogEntry is a saved list of upstream models fetched for a specific provider+key combination.
-type CatalogEntry struct {
-	ID         string         `json:"id"`
-	InstanceID string         `json:"instance_id,omitempty"`
-	Provider   string         `json:"provider"`
-	APIBase    string         `json:"api_base"`
-	APIKeyMask string         `json:"api_key_mask"`
-	Models     []CatalogModel `json:"models"`
-	FetchedAt  string         `json:"fetched_at"`
-}
+type CatalogEntry = modelservice.CatalogEntry
+
+// CatalogStore holds all saved model catalogs.
+type CatalogStore = modelservice.CatalogStore
 
 func saveProviderInstanceCatalog(instance *config.ProviderInstanceConfig, models []CatalogModel) error {
-	store, err := loadCatalogs()
-	if err != nil {
-		return err
-	}
-	store.Entries[instance.ID] = &CatalogEntry{
-		ID:         instance.ID,
-		InstanceID: instance.ID,
-		Provider:   instance.ProviderKind,
-		APIBase:    strings.TrimRight(strings.TrimSpace(instance.Endpoint), "/"),
-		Models:     models,
-		FetchedAt:  time.Now().UTC().Format(time.RFC3339),
-	}
-	return saveCatalogs(store)
+	return modelservice.SaveProviderInstanceCatalog(instance, models)
 }
 
 func deleteProviderInstanceCatalog(instanceID string) error {
-	store, err := loadCatalogs()
-	if err != nil {
-		return err
-	}
-	delete(store.Entries, instanceID)
-	return saveCatalogs(store)
-}
-
-// CatalogStore holds all saved model catalogs.
-type CatalogStore struct {
-	Entries map[string]*CatalogEntry `json:"entries"`
+	return modelservice.DeleteProviderInstanceCatalog(instanceID)
 }
 
 func catalogFilePath() string {
-	return filepath.Join(config.GetHome(), "model_catalogs.json")
+	return modelservice.CatalogFilePath()
 }
 
-// generateCatalogKey creates a deterministic key for a provider+base+key combination.
 func generateCatalogKey(provider, apiBase, apiKey string) string {
-	provider = providers.NormalizeProvider(provider)
-	apiBase = strings.TrimRight(strings.TrimSpace(apiBase), "/")
-	hash := sha256.Sum256([]byte(apiKey))
-	return fmt.Sprintf("%s|%s|%x", provider, apiBase, hash[:6])
+	return modelservice.GenerateCatalogKey(provider, apiBase, apiKey)
 }
 
-// maskAPIKeyValue masks an API key for display.
-// Keys longer than 12 chars show prefix + last 4 chars: "sk-****abcd".
-// Keys 9-12 chars show prefix + last 2 chars: "sk-****cd".
-// Shorter keys are fully masked as "****".
-// Empty keys return empty string.
-// Ensure at least 40% of the key will not be displayed.
 func maskAPIKeyValue(key string) string {
-	key = strings.TrimSpace(key)
-	if key == "" {
-		return ""
-	}
-	if len(key) <= 8 {
-		return "****"
-	}
-	if len(key) <= 12 {
-		return key[:3] + "****" + key[len(key)-2:]
-	}
-	return key[:3] + "****" + key[len(key)-4:]
+	return modelservice.MaskAPIKeyValue(key)
 }
 
 func loadCatalogs() (*CatalogStore, error) {
-	path := catalogFilePath()
-	data, err := os.ReadFile(path)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return &CatalogStore{Entries: make(map[string]*CatalogEntry)}, nil
-		}
-		return nil, err
-	}
-	var store CatalogStore
-	if err := json.Unmarshal(data, &store); err != nil {
-		return nil, err
-	}
-	if store.Entries == nil {
-		store.Entries = make(map[string]*CatalogEntry)
-	}
-	return &store, nil
+	return modelservice.LoadCatalogs()
 }
 
 func saveCatalogs(store *CatalogStore) error {
-	path := catalogFilePath()
-	data, err := json.MarshalIndent(store, "", "  ")
-	if err != nil {
-		return err
-	}
-	return fileutil.WriteFileAtomic(path, data, 0o600)
+	return modelservice.SaveCatalogs(store)
 }
 
 // SaveCatalog persists a fetched model list for a given provider+key combination.
