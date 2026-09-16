@@ -1,601 +1,228 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Facet Studio | Local-First AI Agent Cockpit & In-Process Kernel</title>
+  <title>Facet Studio — Local-First Agent Cockpit &amp; In-Process Kernel</title>
   <meta name="description" content="Facet Studio is a local-first agent application and embeddable runtime kernel. Owns conversations, model access, provider auth, skills, tool execution, and capability modules.">
-  <link rel="icon" type="image/svg+xml" href="facet-mark.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Facet Studio">
+  <meta property="og:url" content="https://xibodev.github.io/facet-studio/">
+  <meta property="og:title" content="Facet Studio — Local-First Agent Cockpit &amp; In-Process Kernel">
+  <meta property="og:description" content="One local-first agent cockpit. Zero config to chat. Dual binary architecture with in-process Go embedding.">
+  <link rel="canonical" href="https://xibodev.github.io/facet-studio/">
+  <link rel="icon" href="facet-mark.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg: #000000;
-      --card-bg: rgba(255, 255, 255, 0.03);
-      --card-hover: rgba(255, 255, 255, 0.06);
-      --border: rgba(255, 255, 255, 0.09);
-      --border-hover: rgba(255, 255, 255, 0.2);
-      --text: #f5f5f7;
-      --text-secondary: #86868b;
-      --accent: #2997ff;
-      --accent-hover: #0071e3;
-      --font-system: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
-      --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--font-system);
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
-      line-height: 1.5;
-      overflow-x: hidden;
-    }
-    a { color: var(--accent); text-decoration: none; transition: color 0.15s ease; }
-    a:hover { color: #6cb8ff; text-decoration: none; }
-    code, pre { font-family: var(--font-mono); font-size: 0.875rem; }
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 1.5rem; }
-
-    /* Header / Liquid Glass Nav */
-    header {
-      border-bottom: 1px solid var(--border);
-      background: rgba(0, 0, 0, 0.75);
-      backdrop-filter: blur(20px) saturate(180%);
-      -webkit-backdrop-filter: blur(20px) saturate(180%);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .nav-wrap {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      height: 3.75rem;
-    }
-    .brand {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.75rem;
-      font-weight: 600;
-      font-size: 1.15rem;
-      color: #fff;
-      letter-spacing: -0.015em;
-    }
-    .brand img { height: 26px; width: auto; }
-    nav { display: flex; gap: 1.75rem; align-items: center; font-size: 0.875rem; font-weight: 500; }
-    nav a { color: var(--text-secondary); }
-    nav a:hover { color: #fff; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      padding: 0.45rem 1rem;
-      border-radius: 980px;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      letter-spacing: -0.01em;
-      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-      cursor: pointer;
-    }
-    .btn-primary {
-      background: #0071e3;
-      color: #ffffff;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    .btn-primary:hover {
-      background: #0077ed;
-      color: #ffffff;
-      box-shadow: 0 0 24px rgba(41, 151, 255, 0.35);
-    }
-
-    /* Hero */
-    .hero {
-      text-align: center;
-      padding: 6rem 0 3.5rem;
-      position: relative;
-    }
-    .hero-glow {
-      position: absolute;
-      top: 15%;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 700px;
-      height: 320px;
-      background: radial-gradient(circle, rgba(41, 151, 255, 0.12) 0%, rgba(99, 102, 241, 0.04) 50%, transparent 70%);
-      filter: blur(80px);
-      pointer-events: none;
-      z-index: -1;
-    }
-    .badge {
-      display: inline-flex;
-      align-items: center;
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #d1d1d6;
-      padding: 0.25rem 0.85rem;
-      border-radius: 980px;
-      font-size: 0.75rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      margin-bottom: 1.75rem;
-    }
-    h1 {
-      font-size: clamp(2.4rem, 5.5vw, 4.25rem);
-      font-weight: 700;
-      letter-spacing: -0.035em;
-      line-height: 1.08;
-      max-width: 20ch;
-      margin: 0 auto 1.25rem;
-      color: #f5f5f7;
-    }
-    .hero-accent {
-      color: #2997ff;
-    }
-    .subtitle {
-      max-width: 58ch;
-      margin: 0 auto 2.75rem;
-      font-size: 1.125rem;
-      line-height: 1.6;
-      color: var(--text-secondary);
-      font-weight: 400;
-    }
-
-    /* macOS Terminal Window */
-    .terminal-card {
-      max-width: 680px;
-      margin: 0 auto;
-      background: rgba(20, 20, 22, 0.85);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(255, 255, 255, 0.05);
-      overflow: hidden;
-      text-align: left;
-    }
-    .terminal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.75rem 1.15rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--border);
-    }
-    .window-dots {
-      display: flex;
-      gap: 7px;
-    }
-    .window-dot {
-      width: 11px;
-      height: 11px;
-      border-radius: 50%;
-    }
-    .dot-red { background: #ff5f56; }
-    .dot-yellow { background: #ffbd2e; }
-    .dot-green { background: #27c93f; }
-    .terminal-tabs {
-      display: flex;
-      gap: 0.25rem;
-      background: rgba(0, 0, 0, 0.4);
-      padding: 2px;
-      border-radius: 6px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
-    }
-    .terminal-tab {
-      background: transparent;
-      border: none;
-      color: var(--text-secondary);
-      font-family: var(--font-system);
-      font-size: 0.75rem;
-      font-weight: 500;
-      padding: 0.25rem 0.65rem;
-      border-radius: 4px;
-      cursor: pointer;
-      transition: all 0.15s ease;
-    }
-    .terminal-tab.active {
-      background: rgba(255, 255, 255, 0.12);
-      color: #fff;
-    }
-    .terminal-body {
-      padding: 1.15rem 1.35rem;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1rem;
-      background: rgba(0, 0, 0, 0.6);
-    }
-    .code-line {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      color: #e2e8f0;
-      font-weight: 500;
-      overflow-x: auto;
-    }
-    .prompt-char { color: #52525b; user-select: none; }
-    .copy-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      color: #f5f5f7;
-      padding: 0.35rem 0.8rem;
-      border-radius: 6px;
-      font-family: var(--font-system);
-      font-size: 0.75rem;
-      font-weight: 500;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.4rem;
-      flex-shrink: 0;
-      transition: all 0.15s ease;
-    }
-    .copy-btn:hover { background: rgba(255, 255, 255, 0.14); }
-
-    /* Features Section */
-    .features {
-      padding: 5.5rem 0 3.5rem;
-    }
-    .section-title {
-      text-align: center;
-      font-size: 2.15rem;
-      font-weight: 700;
-      letter-spacing: -0.025em;
-      margin-bottom: 0.75rem;
-      color: #f5f5f7;
-    }
-    .section-desc {
-      text-align: center;
-      max-width: 620px;
-      margin: 0 auto 3.5rem;
-      color: var(--text-secondary);
-      font-size: 1.05rem;
-      line-height: 1.6;
-    }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(310px, 1fr));
-      gap: 1.25rem;
-    }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 1.75rem;
-      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .card:hover {
-      background: var(--card-hover);
-      border-color: var(--border-hover);
-      transform: translateY(-2px);
-    }
-    .card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
-      background: rgba(41, 151, 255, 0.1);
-      display: grid;
-      place-items: center;
-      margin-bottom: 1.25rem;
-      color: var(--accent);
-    }
-    .card-icon svg {
-      width: 20px;
-      height: 20px;
-      stroke: currentColor;
-      stroke-width: 1.8;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .card h3 {
-      font-size: 1.125rem;
-      font-weight: 600;
-      letter-spacing: -0.015em;
-      margin-bottom: 0.5rem;
-      color: #f5f5f7;
-    }
-    .card p {
-      font-size: 0.875rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Steps Section */
-    .steps {
-      padding: 4rem 0 5rem;
-      border-top: 1px solid var(--border);
-    }
-    .steps-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1.25rem;
-      margin-top: 2rem;
-    }
-    .step-box {
-      background: rgba(255, 255, 255, 0.02);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      padding: 1.5rem;
-    }
-    .step-num {
-      font-family: var(--font-mono);
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--accent);
-      letter-spacing: 0.05em;
-      margin-bottom: 0.75rem;
-    }
-    .step-box h4 {
-      font-size: 1.05rem;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      margin-bottom: 0.5rem;
-      color: #fff;
-    }
-    .step-box p {
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      line-height: 1.6;
-    }
-
-    /* Developer Section */
-    .dev-section {
-      padding: 4.5rem 0 6rem;
-      border-top: 1px solid var(--border);
-    }
-    .dev-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2.5rem;
-    }
-    .dev-card {
-      background: rgba(14, 14, 16, 0.75);
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      overflow: hidden;
-    }
-    .dev-card-header {
-      padding: 0.85rem 1.25rem;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: #f5f5f7;
-    }
-    .dev-card-header svg {
-      width: 16px;
-      height: 16px;
-      stroke: var(--accent);
-      stroke-width: 1.8;
-      fill: none;
-      stroke-linecap: round;
-      stroke-linejoin: round;
-    }
-    .dev-card pre {
-      padding: 1.25rem;
-      background: rgba(0, 0, 0, 0.5);
-      margin: 0;
-      line-height: 1.7;
-      color: #d1d5db;
-      overflow-x: auto;
-    }
-
-    /* Footer */
-    footer {
-      border-top: 1px solid var(--border);
-      padding: 2.5rem 0;
-      color: var(--text-secondary);
-      font-size: 0.8125rem;
-    }
-    .footer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    @media (max-width: 640px) {
-      .hero { padding: 4rem 0 2rem; }
-      .terminal-body { flex-direction: column; align-items: stretch; }
-      .code-line { font-size: 0.8rem; }
-      .dev-grid { grid-template-columns: 1fr; }
-    }
-  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="landing-page">
+  <a class="skip-link" href="#main-content">Skip to content</a>
 
-  <header>
-    <div class="container nav-wrap">
-      <a href="#" class="brand">
-        <img src="facet-logo.svg" alt="Facet Studio Logo">
-      </a>
-      <nav>
-        <a href="#features">Features</a>
-        <a href="#developers">Embedding &amp; CLI</a>
-        <a href="#install">Install</a>
-        <a href="https://github.com/xibodev/facet-studio" target="_blank" rel="noopener">GitHub</a>
-        <a href="#install" class="btn btn-primary">Get Started</a>
-      </nav>
-    </div>
+  <header class="site-header">
+    <a href="index.html" class="brand" aria-label="Facet Studio home">
+      <span class="brand-mark" aria-hidden="true"><img src="facet-mark.svg" width="34" height="34" alt="Facet Studio mark"></span>
+      <span class="brand-name" aria-hidden="true">facet.studio</span>
+    </a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      <a class="nav-current" href="index.html" aria-current="page">Overview</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#capabilities">Capabilities</a>
+      <a href="#developers">Embedding &amp; CLI</a>
+      <a href="#install">Install</a>
+      <a href="https://github.com/xibodev/facet-studio" target="_blank" rel="noopener">GitHub</a>
+    </nav>
+    <button id="theme-toggle-btn" class="toggle-btn" type="button" aria-label="Switch to dark theme">DARK</button>
   </header>
 
-  <main>
-    <section class="hero container" id="install">
-      <div class="hero-glow"></div>
-      <div class="badge">
-        <span>Version 1.0.0</span>
+  <main id="main-content" class="landing-content">
+    <section class="landing-hero">
+      <div class="hero-copy">
+        <p class="eyebrow">V1.0.0 · LOCAL-FIRST AGENT RUNTIME</p>
+        <h1>One local-first agent cockpit. Zero config to chat.</h1>
+        <p class="hero-lede">
+          Facet Studio is a complete agent application with a headed web cockpit and an embeddable in-process Go kernel. Connect models, tools, and capability modules without external dependencies.
+        </p>
+        <div class="hero-actions">
+          <a class="button-primary" href="#install">Start with one line <span aria-hidden="true">→</span></a>
+          <a class="button-link" href="#architecture">Read architecture</a>
+        </div>
       </div>
-      <h1>One Local-First Agent Cockpit. <span class="hero-accent">Zero Config to Chat.</span></h1>
-      <p class="subtitle">
-        Facet Studio is a complete, local-first agent application with a headed web cockpit and an embeddable in-process kernel. Connect your models, tools, and capability modules in seconds.
+      <div class="hero-terminal">
+        <div class="terminal-chrome">
+          <span>facet-studio / pre-flight check</span>
+          <span>zero-key verified</span>
+        </div>
+        <pre aria-label="Facet Studio startup log"><code><span class="t-cyan">$ facet-studio-kernel onboard</span>
+System: Self-contained binary (no Python, Node, or Docker)
+Probing anonymous free providers...
+  <span class="t-green">ok  opencode-zen (ling-3.0-flash-fin-free) · 242ms [reachable]</span>
+  <span class="t-green">ok  pollinations (openai-fast) · 318ms [reachable]</span>
+
+Dashboard password encrypted and saved.
+Wired into active chat shortlist.
+
+<span class="t-cyan">$ facet-studio</span>
+<span class="t-green t-bold">Serving web console at http://localhost:18800</span>
+Turn 1 ready without API keys.</code></pre>
+      </div>
+    </section>
+
+    <section class="release-notice">
+      <div class="notice-mark">1.0.0</div>
+      <div>
+        <h2>PUBLIC STABLE RELEASE</h2>
+        <p>Dual-binary architecture, GitHub Copilot token refresh, tool fallback resilience, and verified zero-key free models configured out of the box.</p>
+      </div>
+      <a href="https://github.com/xibodev/facet-studio/releases/tag/v1.0.0" target="_blank" rel="noopener">Read release notes <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="landing-section" id="architecture">
+      <div class="section-label">THE ARCHITECTURE</div>
+      <div class="section-intro">
+        <h2>One brain. Multiple surfaces. Zero fragile shell-outs.</h2>
+        <p>The kernel owns conversation, models, credentials, and tool execution. Presentation surfaces merely project that state.</p>
+      </div>
+      <ol class="evidence-chain">
+        <li>
+          <span>01</span>
+          <strong>Kernel Engine</strong>
+          <small>Turn loop, memory cairns, tool calling, and fallback resilience</small>
+        </li>
+        <li>
+          <span>02</span>
+          <strong>Service Layer</strong>
+          <small>Curated registry, reachability ping, catalog sync, free auto-connect</small>
+        </li>
+        <li>
+          <span>03</span>
+          <strong>Headed Shell</strong>
+          <small>Headed web cockpit, desktop launcher, and lifecycle supervisor</small>
+        </li>
+        <li>
+          <span>04</span>
+          <strong>Host Applications</strong>
+          <small>Midden &amp; Facet native in-process Go embedding</small>
+        </li>
+      </ol>
+      <p class="boundary-note">
+        Downstream applications bind domain tools natively in Go memory without foreign subprocesses, socket serialization, or stdin/stdout text scraping.
       </p>
+    </section>
 
-      <div class="terminal-card">
-        <div class="terminal-header">
-          <div class="window-dots">
-            <span class="window-dot dot-red"></span>
-            <span class="window-dot dot-yellow"></span>
-            <span class="window-dot dot-green"></span>
-          </div>
-          <div class="terminal-tabs">
-            <button class="terminal-tab active" onclick="switchTab('win')">Windows (PowerShell)</button>
-            <button class="terminal-tab" onclick="switchTab('nix')">macOS &amp; Linux</button>
-          </div>
+    <section class="landing-section" id="capabilities">
+      <div class="section-label">CAPABILITIES</div>
+      <div class="section-intro">
+        <h2>Built for dependable agentic operations.</h2>
+        <p>Every provider, auth method, and model selector follows strict product boundaries.</p>
+      </div>
+      <div class="grid-cards">
+        <article class="tech-card">
+          <div class="card-tag">OUT OF THE BOX</div>
+          <div class="card-title">Zero-Key Free Chat</div>
+          <div class="card-desc">Start chatting immediately on first launch with verified anonymous models (OpenCode Zen, Pollinations). No credit card, no sign-ups, and no keys needed.</div>
+        </article>
+
+        <article class="tech-card">
+          <div class="card-tag">AUTHENTICATION</div>
+          <div class="card-title">Device Auth &amp; Subscriptions</div>
+          <div class="card-desc">First-class device sign-in for GitHub Copilot (individual &amp; enterprise), OpenAI Codex, and ChatGPT web sessions with automatic session token exchange.</div>
+        </article>
+
+        <article class="tech-card">
+          <div class="card-tag">MODEL SELECTION</div>
+          <div class="card-title">Curated Active Shortlist</div>
+          <div class="card-desc">Never scroll through thousands of raw endpoints. Curate your active chat shortlist with 1-click model toggles directly from any connected provider.</div>
+        </article>
+
+        <article class="tech-card">
+          <div class="card-tag">IN-PROCESS RUNTIME</div>
+          <div class="card-title">Embeddable Kernel</div>
+          <div class="card-desc">The runtime engine serves as an in-process embeddable kernel for downstream consumers like Facet and Midden, without spawning foreign subprocesses.</div>
+        </article>
+
+        <article class="tech-card">
+          <div class="card-tag">EXTENSIBILITY</div>
+          <div class="card-title">Bounded Capability Modules</div>
+          <div class="card-desc">Extensible via isolated, detached capability modules with built-in human-in-the-loop approval gates for chargeable or destructive operations.</div>
+        </article>
+
+        <article class="tech-card">
+          <div class="card-tag">PACKAGING</div>
+          <div class="card-title">Zero External Dependencies</div>
+          <div class="card-desc">Single-bundle native binary with embedded SQLite, offline vector brand marks, and statically compiled web cockpit. No Python, Node, or Docker required.</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="landing-section" id="install">
+      <div class="section-label">GET STARTED</div>
+      <div class="start-grid">
+        <div>
+          <h2>Install and run in seconds.</h2>
+          <p>
+            The interactive installer verifies your environment, sets your local admin password securely, auto-wires verified free models, and opens your browser directly into the dashboard.
+          </p>
         </div>
-        <div class="terminal-body">
-          <div class="code-line">
-            <span class="prompt-char">&gt;</span>
-            <span id="install-cmd">irm https://xibodev.github.io/facet-studio/install.ps1 | iex</span>
+        <div class="install-panel">
+          <div class="code-header">
+            <div class="tab-buttons">
+              <button class="tab-btn active" data-os="win" onclick="switchTab('win')">POWERSHELL</button>
+              <button class="tab-btn" data-os="nix" onclick="switchTab('nix')">MACOS &amp; LINUX</button>
+            </div>
+            <button id="copy-install-btn" class="copy-btn" type="button" onclick="copyInstallCmd()">COPY</button>
           </div>
-          <button class="copy-btn" onclick="copyCommand()">
-            <span id="copy-text">Copy</span>
-          </button>
+          <pre><code id="install-code">irm https://xibodev.github.io/facet-studio/install.ps1 | iex</code></pre>
+          <div class="panel-footer">
+            <span>DEFAULT PORT: 18800 (OR CLEAN PORT 19900)</span>
+            <a href="https://github.com/xibodev/facet-studio/releases/latest" target="_blank" rel="noopener">Manual downloads <span aria-hidden="true">→</span></a>
+          </div>
         </div>
       </div>
     </section>
 
-    <section class="features container" id="features">
-      <h2 class="section-title">Built for Real Agentic Work</h2>
-      <p class="section-desc">Designed with intentional craft, strict platform boundaries, and zero extraneous dependencies.</p>
-      <div class="grid">
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
-          </div>
-          <h3>Zero-Key Free Chat</h3>
-          <p>
-            Start chatting immediately on first launch with tested, zero-key anonymous free models (OpenCode Zen, Pollinations). No credit card, no sign-ups, and no API key required.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><circle cx="7.5" cy="15.5" r="4.5"></circle><path d="m21 3-9.5 9.5"></path><path d="m15.5 7.5 3 3"></path></svg>
-          </div>
-          <h3>Device Auth &amp; Subscriptions</h3>
-          <p>
-            First-class device sign-in for GitHub Copilot (individual and enterprise), OpenAI Codex, and ChatGPT web sessions. Full multi-turn conversation, streaming, and tool calls supported natively.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"></circle><line x1="22" y1="12" x2="18" y2="12"></line><line x1="6" y1="12" x2="2" y2="12"></line><line x1="12" y1="6" x2="12" y2="2"></line><line x1="12" y1="22" x2="12" y2="18"></line></svg>
-          </div>
-          <h3>Curated Model Shortlist</h3>
-          <p>
-            Never scroll through 1,000s of raw endpoints. Curate your active chat shortlist with 1-click model buttons directly from any connected provider.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-          </div>
-          <h3>Embeddable Kernel</h3>
-          <p>
-            The runtime engine serves as an in-process embeddable kernel for downstream consumers like Facet and Midden, without spawning foreign subprocesses.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          </div>
-          <h3>Bounded Capability Modules</h3>
-          <p>
-            Extensible via isolated, detached capability modules with built-in human-in-the-loop approval gates for chargeable or destructive operations.
-          </p>
-        </div>
-
-        <div class="card">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg>
-          </div>
-          <h3>Zero External Dependencies</h3>
-          <p>
-            Single-bundle native binary with embedded SQLite, offline vector brand marks, and statically compiled web cockpit. No Python, Node, or Docker needed.
-          </p>
-        </div>
+    <section class="landing-section" id="developers">
+      <div class="section-label">DEVELOPER EMBEDDING &amp; CLI</div>
+      <div class="section-intro">
+        <h2>Headless CLI or In-Process Go library.</h2>
+        <p>Run standalone in terminal, manage models from scripts, or embed the Go packages directly.</p>
       </div>
-    </section>
-
-    <section class="steps container">
-      <h2 class="section-title">How It Works</h2>
-      <div class="steps-row">
-        <div class="step-box">
-          <div class="step-num">01 / SETUP</div>
-          <h4>Run the One-Liner</h4>
-          <p>Paste the installer command into your shell. It verifies your environment and sets your dashboard password directly in the terminal.</p>
-        </div>
-        <div class="step-box">
-          <div class="step-num">02 / PROBE</div>
-          <h4>Live Pre-Flight Test</h4>
-          <p>The installer pings free zero-key model endpoints in 2 seconds, confirms reachability, and auto-wires a verified working model.</p>
-        </div>
-        <div class="step-box">
-          <div class="step-num">03 / LAUNCH</div>
-          <h4>Start Chatting</h4>
-          <p>Facet Studio launches in your browser on <a href="http://localhost:18800" target="_blank">http://localhost:18800</a> (or clean port 19900) ready to chat on turn 1.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="dev-section container" id="developers">
-      <h2 class="section-title">In-Process Go Embedding &amp; Headless CLI</h2>
-      <p class="section-desc">
-        Downstream applications like Facet and Midden embed the runtime directly in Go memory. Terminal operators can manage models and run turns entirely headlessly.
-      </p>
 
       <div class="dev-grid">
-        <div class="dev-card">
-          <div class="dev-card-header">
-            <svg viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"></polyline><line x1="12" y1="19" x2="20" y2="19"></line></svg>
-            <span>Standalone Kernel CLI</span>
-          </div>
-          <pre><code><span style="color: #64748b;"># Fresh setup with auto-wired free models</span>
+        <div class="dev-box">
+          <div class="dev-header">TERMINAL CLI / DAEMON</div>
+          <pre><code># Fresh setup with auto-wired free models
 facet-studio-kernel onboard
 
-<span style="color: #64748b;"># Inspect all 50+ curated providers</span>
+# Inspect all 50+ curated providers
 facet-studio-kernel model roster
 
-<span style="color: #64748b;"># Probe endpoint latency and health</span>
+# Probe endpoint latency and health
 facet-studio-kernel model ping opencode-zen
 
-<span style="color: #64748b;"># Connect working free models without a browser</span>
+# Connect working free models without browser
 facet-studio-kernel model auto-free
 
-<span style="color: #64748b;"># Run an agent turn directly in terminal</span>
+# Run an agent turn directly in terminal
 facet-studio-kernel agent "Explain this repository"</code></pre>
         </div>
 
-        <div class="dev-card">
-          <div class="dev-card-header">
-            <svg viewBox="0 0 24 24"><path d="m18 15-6-6-6 6"/></svg>
-            <span>In-Process Go Embedding</span>
-          </div>
-          <pre><code><span style="color: #2997ff;">import</span> (
-    <span style="color: #a78bfa;">"github.com/xibodev/facet-studio/pkg/agent"</span>
-    <span style="color: #a78bfa;">"github.com/xibodev/facet-studio/pkg/config"</span>
+        <div class="dev-box">
+          <div class="dev-header">IN-PROCESS GO EMBEDDING</div>
+          <pre><code>import (
+    "github.com/xibodev/facet-studio/pkg/agent"
+    "github.com/xibodev/facet-studio/pkg/config"
 )
 
-<span style="color: #64748b;">// 1. Load config (or pre-seeded defaults)</span>
+// 1. Load config (or pre-seeded defaults)
 cfg, _ := config.LoadConfig(path)
 
-<span style="color: #64748b;">// 2. Initialize agent in memory</span>
+// 2. Initialize agent in memory
 loop, _ := agent.NewAgentLoop(cfg, domainTools)
 
-<span style="color: #64748b;">// 3. Stream turns with Go callbacks</span>
-loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #2997ff;">func</span>(chunk <span style="color: #2997ff;">string</span>) {
+// 3. Stream turns with Go callbacks
+loop.ProcessTurn(ctx, sessionID, prompt, func(chunk string) {
     ui.RenderStream(chunk)
 })</code></pre>
         </div>
@@ -603,36 +230,14 @@ loop.ProcessTurn(ctx, sessionID, prompt, <span style="color: #2997ff;">func</spa
     </section>
   </main>
 
-  <footer>
-    <div class="container footer-row">
-      <p>&copy; 2026 Facet Studio contributors. Released under the MIT license.</p>
-      <p><a href="https://github.com/xibodev/facet-studio" target="_blank" rel="noopener">GitHub Repository</a></p>
-    </div>
+  <footer class="site-footer">
+    <span>MIT LICENSE · COPYRIGHT © 2026 XIBODEV</span>
+    <span>
+      <a href="https://github.com/xibodev/facet-studio" target="_blank" rel="noopener">GITHUB</a> · 
+      <a href="https://github.com/xibodev/facet-studio/releases" target="_blank" rel="noopener">RELEASES</a>
+    </span>
   </footer>
 
-  <script>
-    let currentOS = 'win';
-    const commands = {
-      win: 'irm https://xibodev.github.io/facet-studio/install.ps1 | iex',
-      nix: 'curl -fsSL https://xibodev.github.io/facet-studio/install.sh | bash'
-    };
-
-    function switchTab(os) {
-      currentOS = os;
-      document.querySelectorAll('.terminal-tab').forEach((tab, index) => {
-        tab.classList.toggle('active', (os === 'win' && index === 0) || (os === 'nix' && index === 1));
-      });
-      document.getElementById('install-cmd').innerText = commands[os];
-    }
-
-    function copyCommand() {
-      const cmd = commands[currentOS];
-      navigator.clipboard.writeText(cmd).then(() => {
-        const textSpan = document.getElementById('copy-text');
-        textSpan.innerText = 'Copied';
-        setTimeout(() => { textSpan.innerText = 'Copy'; }, 2000);
-      });
-    }
-  </script>
+  <script src="app.js"></script>
 </body>
 </html>
