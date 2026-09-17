@@ -3,115 +3,511 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Facet Studio Brand Kit Preview</title>
+  <meta name="color-scheme" content="light dark">
+  <title>Cerne brand decision board</title>
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="tokens.css">
   <style>
     * { box-sizing: border-box; }
+    html { background: var(--cerne-canvas); scroll-behavior: smooth; }
     body {
       margin: 0;
-      color: var(--facet-color-ink);
-      background: var(--facet-color-canvas);
-      font-family: var(--facet-font-sans);
-      line-height: 1.6;
-      padding: 40px 20px;
+      min-width: 0;
+      color: var(--cerne-ink);
+      background: var(--cerne-canvas);
+      font-family: var(--cerne-font-sans);
+      font-size: 16px;
+      line-height: 1.55;
     }
-    .wrap { max-width: 1040px; margin: 0 auto; }
-    h1, h2, h3 { font-family: var(--facet-font-sans); letter-spacing: -0.03em; }
-    h1 { font-size: 2.5rem; margin-bottom: 0.5rem; }
-    p.subtitle { color: var(--facet-color-muted); font-size: 1.15rem; margin-bottom: 2.5rem; }
-    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; margin-bottom: 3rem; }
-    .card {
-      background: var(--facet-color-surface);
-      border: 1px solid var(--facet-color-line);
-      border-radius: 12px;
-      padding: 1.5rem;
-      text-align: center;
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    button { font: inherit; }
+    .page { width: min(1240px, calc(100% - 40px)); margin: 0 auto; padding: 24px 0 80px; }
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      min-height: 64px;
+      padding: 10px 0 24px;
+      border-bottom: 1px solid var(--cerne-line);
     }
-    .card.dark {
-      background: var(--facet-color-navy);
-      color: #fff;
+    .topbar img { width: 154px; height: auto; }
+    .topbar-meta { display: flex; align-items: center; gap: 9px; color: var(--cerne-muted); font-size: 12px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+    .status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--cerne-cobalt); }
+    .intro {
+      position: relative;
+      display: grid;
+      grid-template-columns: minmax(0, 1.36fr) minmax(300px, .64fr);
+      gap: 64px;
+      align-items: end;
+      padding: 92px 0 84px;
     }
-    .card img { max-height: 90px; margin: 0 auto 1rem; display: block; }
-    .card span { font-family: var(--facet-font-mono); font-size: 0.8rem; color: var(--facet-color-muted); }
-    .card.dark span { color: #94a3b8; }
-    .palette { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 3rem; }
-    .swatch {
-      background: var(--facet-color-surface);
-      border: 1px solid var(--facet-color-line);
-      border-radius: 8px;
+    .intro::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: 46px;
+      width: 132px;
+      height: 8px;
+      background: var(--cerne-cobalt);
+    }
+    .kicker, .section-index, .mock-label {
+      color: var(--cerne-deep);
+      font-family: var(--cerne-font-mono);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: .13em;
+      text-transform: uppercase;
+    }
+    h1, h2, h3, p { margin-top: 0; }
+    h1 {
+      max-width: 860px;
+      margin: 22px 0 28px;
+      font-size: clamp(48px, 7.1vw, 104px);
+      font-weight: var(--cerne-font-weight-display);
+      letter-spacing: -.065em;
+      line-height: .96;
+    }
+    .intro-lede { max-width: 690px; margin: 0; color: var(--cerne-muted); font-size: clamp(18px, 2vw, 24px); line-height: 1.45; }
+    .intro-aside { padding: 28px 0 4px 28px; border-left: 1px solid var(--cerne-line); }
+    .intro-aside strong { display: block; margin-bottom: 14px; font-size: 17px; }
+    .intro-aside p { margin-bottom: 26px; color: var(--cerne-muted); font-size: 14px; }
+    .meaning { display: grid; grid-template-columns: 72px 1fr; gap: 12px; padding-top: 18px; border-top: 1px solid var(--cerne-line); }
+    .meaning code { color: var(--cerne-deep); font-family: var(--cerne-font-mono); font-weight: 700; }
+    .meaning span { color: var(--cerne-muted); font-size: 13px; }
+    .notice {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      margin-bottom: 76px;
+      padding: 17px 20px;
+      color: var(--cerne-soft);
+      background: var(--cerne-core-night);
+      border-left: 6px solid var(--cerne-cobalt);
+      border-radius: 0 8px 8px 0;
+      font-size: 14px;
+    }
+    .notice strong { color: var(--cerne-dark-surface-text); white-space: nowrap; }
+    section { padding: 70px 0; border-top: 1px solid var(--cerne-line); }
+    .section-head { display: grid; grid-template-columns: 94px minmax(0, 1fr); gap: 24px; margin-bottom: 36px; }
+    .section-head h2 { margin-bottom: 10px; font-size: clamp(30px, 4vw, 52px); font-weight: var(--cerne-font-weight-display); letter-spacing: -.045em; line-height: 1.05; }
+    .section-head p { max-width: 680px; margin-bottom: 0; color: var(--cerne-muted); }
+    .asset-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: 16px; }
+    .asset-card {
+      grid-column: span 6;
+      display: flex;
+      min-height: 242px;
+      flex-direction: column;
+      justify-content: space-between;
       overflow: hidden;
-      font-family: var(--facet-font-mono);
-      font-size: 0.8rem;
+      background: var(--cerne-surface);
+      border: 1px solid var(--cerne-line);
+      border-radius: 14px;
     }
-    .swatch-color { height: 70px; }
-    .swatch-info { padding: 0.75rem; }
-    .swatch-name { font-weight: 700; display: block; margin-bottom: 0.2rem; font-family: var(--facet-font-sans); }
+    .asset-card.small { grid-column: span 3; min-height: 220px; }
+    .asset-card.dark { color: var(--cerne-soft); background: var(--cerne-core-night); border-color: var(--cerne-core-night); }
+    .asset-stage { display: grid; min-height: 174px; place-items: center; padding: 32px; }
+    .asset-stage img { width: min(100%, 330px); max-height: 104px; }
+    .asset-card.small .asset-stage img { width: 92px; }
+    .asset-caption { display: flex; justify-content: space-between; gap: 16px; padding: 13px 16px; border-top: 1px solid var(--cerne-line); color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 11px; }
+    .dark .asset-caption { color: var(--cerne-dark-surface-text); border-color: var(--cerne-muted); }
+    .palette { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+    .swatch { min-width: 0; overflow: hidden; background: var(--cerne-surface); border: 1px solid var(--cerne-line); border-radius: 10px; }
+    .swatch-color { height: 112px; border-bottom: 1px solid rgba(23, 23, 25, .1); }
+    .swatch-copy { padding: 13px 14px 15px; }
+    .swatch-copy strong { display: block; font-size: 13px; }
+    .swatch-copy code { color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 11px; }
+    .type-grid { display: grid; grid-template-columns: 1.3fr .7fr; gap: 16px; margin-top: 16px; }
+    .type-card { min-width: 0; padding: clamp(24px, 4vw, 48px); background: var(--cerne-surface); border: 1px solid var(--cerne-line); border-radius: 14px; }
+    .type-sample { margin-bottom: 34px; font-size: clamp(38px, 6vw, 76px); font-weight: var(--cerne-font-weight-display); letter-spacing: -.055em; line-height: 1; }
+    .type-card p { max-width: 620px; margin-bottom: 0; color: var(--cerne-muted); }
+    .mono-sample { overflow-wrap: anywhere; color: var(--cerne-deep); font-family: var(--cerne-font-mono); font-size: 15px; line-height: 2; }
+    .mono-label { display: block; margin-bottom: 26px; color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 11px; letter-spacing: .1em; text-transform: uppercase; }
+    .size-board { display: grid; grid-template-columns: 1fr 1fr; overflow: hidden; border: 1px solid var(--cerne-line); border-radius: 14px; }
+    .size-field { min-width: 0; padding: clamp(24px, 4vw, 46px); background: var(--cerne-surface); }
+    .size-field.dark { color: var(--cerne-soft); background: var(--cerne-core-night); }
+    .size-row { display: flex; align-items: flex-end; gap: clamp(20px, 5vw, 60px); min-height: 128px; }
+    .size-test { display: grid; justify-items: center; gap: 11px; color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 10px; }
+    .dark .size-test { color: var(--cerne-dark-surface-text); }
+    .size-test img { width: var(--size); height: var(--size); }
+    .icon-strip { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; margin-top: 16px; }
+    .icon-card { display: grid; min-height: 160px; place-items: center; gap: 12px; padding: 20px 10px 14px; text-align: center; background: var(--cerne-surface); border: 1px solid var(--cerne-line); border-radius: 12px; }
+    .icon-card img { width: 76px; height: 76px; }
+    .icon-card code { color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 10px; }
+    .social-stage { padding: clamp(12px, 3vw, 34px); background: var(--cerne-line); border: 1px solid var(--cerne-line); border-radius: 16px; }
+    .social-stage img { width: 100%; aspect-ratio: 1200 / 630; box-shadow: 0 16px 40px rgba(17, 18, 21, .16); }
+    .asset-links { display: flex; gap: 18px; margin-top: 14px; color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 11px; }
+    .mock-wrap { padding: clamp(12px, 2.6vw, 32px); background: var(--cerne-line); border: 1px solid var(--cerne-line); border-radius: 18px; }
+    .mock-note { display: flex; justify-content: space-between; gap: 20px; margin-bottom: 18px; color: var(--cerne-muted); font-size: 12px; }
+    .mock-note strong { color: var(--cerne-deep); text-transform: uppercase; letter-spacing: .08em; }
+    .browser {
+      overflow: hidden;
+      background: var(--cerne-canvas);
+      border: 1px solid var(--cerne-line);
+      border-radius: 12px;
+      box-shadow: 0 18px 45px rgba(17, 18, 21, .11);
+    }
+    .browser-bar { display: flex; align-items: center; gap: 6px; height: 30px; padding: 0 12px; background: var(--cerne-canvas); border-bottom: 1px solid var(--cerne-line); }
+    .browser-dot { width: 7px; height: 7px; border: 1px solid var(--cerne-muted); border-radius: 50%; }
+    .site-header { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 22px clamp(20px, 4vw, 52px); }
+    .site-header img { width: 128px; }
+    .site-nav { display: flex; align-items: center; gap: 22px; color: var(--cerne-muted); font-size: 11px; font-weight: 600; }
+    .site-button { padding: 8px 12px; color: var(--cerne-surface); background: var(--cerne-cobalt); border-radius: 6px; }
+    .site-hero { display: grid; grid-template-columns: minmax(0, 1.12fr) minmax(270px, .88fr); min-height: 500px; align-items: center; padding: clamp(34px, 6vw, 78px) clamp(22px, 6vw, 72px) 80px; }
+    .site-hero-copy h3 { max-width: 680px; margin: 16px 0 22px; font-size: clamp(38px, 5.4vw, 72px); font-weight: var(--cerne-font-weight-display); letter-spacing: -.06em; line-height: .98; }
+    .site-hero-copy p { max-width: 540px; color: var(--cerne-muted); font-size: 16px; }
+    .site-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .site-actions span { padding: 10px 15px; border: 1px solid var(--cerne-line); border-radius: 7px; font-size: 12px; font-weight: 650; }
+    .site-actions .primary { color: var(--cerne-surface); background: var(--cerne-cobalt); border-color: var(--cerne-cobalt); }
+    .core-visual { position: relative; display: grid; min-height: 330px; place-items: center; }
+    .core-visual::before, .core-visual::after { content: ""; position: absolute; border: 1px solid var(--cerne-line); border-radius: 50%; }
+    .core-visual::before { width: 290px; height: 290px; }
+    .core-visual::after { width: 210px; height: 210px; }
+    .core-visual img { position: relative; z-index: 1; width: 154px; }
+    .core-tag { position: absolute; z-index: 2; right: 4%; bottom: 8%; padding: 8px 10px; color: var(--cerne-deep); background: var(--cerne-surface); border: 1px solid var(--cerne-line); border-radius: 6px; font-family: var(--cerne-font-mono); font-size: 10px; }
+    .cockpit-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+    .cockpit { min-width: 0; overflow: hidden; color: var(--cerne-ink); background: var(--cerne-surface); border: 1px solid var(--cerne-line); border-radius: 12px; box-shadow: 0 16px 34px rgba(17, 18, 21, .09); }
+    .cockpit.dark { color: var(--cerne-soft); background: var(--cerne-core-night); border-color: var(--cerne-muted); }
+    .cockpit-top { display: flex; align-items: center; justify-content: space-between; height: 60px; padding: 0 17px; border-bottom: 1px solid var(--cerne-line); }
+    .dark .cockpit-top { border-color: var(--cerne-muted); }
+    .cockpit-top img { width: 104px; }
+    .cockpit-status { display: flex; align-items: center; gap: 7px; color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 9px; }
+    .dark .cockpit-status { color: var(--cerne-dark-surface-text); }
+    .cockpit-shell { display: grid; grid-template-columns: 148px minmax(0, 1fr); min-height: 440px; }
+    .cockpit-side { min-width: 0; padding: 16px 10px; background: var(--cerne-canvas); border-right: 1px solid var(--cerne-line); }
+    .dark .cockpit-side { background: var(--cerne-ink); border-color: var(--cerne-muted); }
+    .side-heading { display: block; padding: 0 9px 9px; color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
+    .dark .side-heading { color: var(--cerne-dark-surface-text); }
+    .side-item { display: flex; align-items: center; gap: 8px; margin-bottom: 4px; padding: 9px; color: var(--cerne-muted); border-radius: 6px; font-size: 10px; font-weight: 600; }
+    .dark .side-item { color: var(--cerne-dark-surface-text); }
+    .side-item.active { color: var(--cerne-deep); background: var(--cerne-surface); }
+    .dark .side-item.active { color: var(--cerne-soft); background: var(--cerne-deep); }
+    .side-icon { width: 8px; height: 8px; border: 1.5px solid currentColor; border-radius: 2px; }
+    .side-item.active .side-icon { background: var(--cerne-cobalt); border-color: var(--cerne-cobalt); }
+    .dark .side-item.active .side-icon { background: var(--cerne-dark-surface-text); border-color: var(--cerne-dark-surface-text); }
+    .cockpit-main { min-width: 0; padding: 26px 22px; }
+    .workspace-label { color: var(--cerne-deep); font-family: var(--cerne-font-mono); font-size: 9px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
+    .dark .workspace-label { color: var(--cerne-dark-surface-text); }
+    .cockpit-main h3 { margin: 8px 0 22px; font-size: 23px; letter-spacing: -.035em; }
+    .chat-line { max-width: 90%; margin: 0 0 10px auto; padding: 12px 14px; color: var(--cerne-surface); background: var(--cerne-cobalt); border-radius: 9px 9px 2px 9px; font-size: 10px; }
+    .dark .chat-line { color: var(--cerne-core-night); background: var(--cerne-dark-surface-text); }
+    .agent-line { margin: 0 0 18px; padding: 14px; background: var(--cerne-canvas); border-left: 3px solid var(--cerne-cobalt); border-radius: 2px 9px 9px 2px; font-size: 10px; line-height: 1.55; }
+    .dark .agent-line { background: var(--cerne-ink); border-color: var(--cerne-dark-surface-text); }
+    .approval { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: center; padding: 12px; border: 1px solid var(--cerne-line); border-radius: 8px; }
+    .dark .approval { border-color: var(--cerne-muted); }
+    .approval strong { display: block; font-size: 10px; }
+    .approval span { color: var(--cerne-muted); font-family: var(--cerne-font-mono); font-size: 8px; }
+    .dark .approval span { color: var(--cerne-dark-surface-text); }
+    .approval-button { padding: 7px 9px; color: var(--cerne-surface); background: var(--cerne-deep); border-radius: 5px; font-size: 8px; font-weight: 700; }
+    .dark .approval-button { color: var(--cerne-core-night); background: var(--cerne-soft); }
+    .cockpit-caption { padding: 13px 16px; color: var(--cerne-muted); background: var(--cerne-canvas); border-top: 1px solid var(--cerne-line); font-size: 11px; }
+    .dark .cockpit-caption { color: var(--cerne-dark-surface-text); background: var(--cerne-ink); border-color: var(--cerne-muted); }
+    .footer { display: grid; grid-template-columns: 1fr auto; gap: 28px; align-items: end; padding: 54px 0 10px; border-top: 1px solid var(--cerne-line); }
+    .footer img { width: 132px; margin-bottom: 16px; }
+    .footer p { max-width: 650px; margin-bottom: 0; color: var(--cerne-muted); font-size: 13px; }
+    .footer code { color: var(--cerne-deep); font-family: var(--cerne-font-mono); font-size: 11px; }
+    @media (max-width: 900px) {
+      .intro { grid-template-columns: 1fr; gap: 38px; padding: 72px 0 64px; }
+      .intro-aside { max-width: 640px; }
+      .asset-card.small { grid-column: span 6; }
+      .palette { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .type-grid, .cockpit-grid { grid-template-columns: 1fr; }
+      .site-hero { grid-template-columns: 1fr; }
+      .core-visual { min-height: 300px; }
+    }
+    @media (max-width: 620px) {
+      .page { width: min(100% - 24px, 1240px); padding-top: 12px; }
+      .topbar { align-items: flex-start; padding-bottom: 15px; }
+      .topbar img { width: 126px; }
+      .topbar-meta { max-width: 138px; justify-content: flex-end; text-align: right; font-size: 9px; }
+      .intro { padding-top: 58px; }
+      .intro::after { top: 26px; width: 84px; height: 6px; }
+      h1 { font-size: clamp(46px, 15vw, 68px); }
+      .intro-aside { padding-left: 20px; }
+      .notice { display: block; margin-bottom: 46px; }
+      .notice strong { display: block; margin-bottom: 6px; }
+      section { padding: 50px 0; }
+      .section-head { grid-template-columns: 1fr; gap: 8px; }
+      .asset-card, .asset-card.small { grid-column: 1 / -1; }
+      .palette { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .swatch-color { height: 84px; }
+      .size-board { grid-template-columns: 1fr; }
+      .size-row { gap: 28px; }
+      .icon-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mock-note { display: block; }
+      .mock-note strong { display: block; margin-bottom: 4px; }
+      .site-nav span:not(.site-button) { display: none; }
+      .site-header { padding: 16px; }
+      .site-header img { width: 112px; }
+      .site-hero { min-height: 0; padding: 42px 20px 30px; }
+      .site-hero-copy h3 { font-size: 42px; }
+      .core-visual::before { width: 230px; height: 230px; }
+      .core-visual::after { width: 165px; height: 165px; }
+      .core-visual img { width: 125px; }
+      .cockpit-top img { width: 92px; }
+      .cockpit-shell { grid-template-columns: 54px minmax(0, 1fr); min-height: 430px; }
+      .cockpit-side { padding-inline: 7px; }
+      .side-heading, .side-label { display: none; }
+      .side-item { justify-content: center; padding: 10px 5px; }
+      .cockpit-main { padding: 22px 14px; }
+      .approval { grid-template-columns: 1fr; }
+      .approval-button { justify-self: start; }
+      .footer { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>Facet Studio Identity System</h1>
-    <p class="subtitle">Brand Kit &amp; Identity Assets for Facet Studio and its In-Process Kernel</p>
+  <main class="page">
+    <header class="topbar">
+      <img src="logos/lockup.svg" alt="Cerne">
+      <div class="topbar-meta"><span class="status-dot"></span>Brand-only candidate / decision board</div>
+    </header>
 
-    <h2>Logos &amp; Signatures</h2>
-    <div class="grid">
-      <div class="card">
-        <img src="logos/mark.svg" alt="Primary mark">
-        <span>logos/mark.svg</span>
+    <div class="intro">
+      <div>
+        <span class="kicker">Identity system 01</span>
+        <h1>The local agent core that stays useful when the shell changes.</h1>
+        <p class="intro-lede">Cerne is the local agent core that stays useful when the shell changes. A complete visual system for a local-first agent cockpit and embeddable runtime.</p>
       </div>
-      <div class="card dark">
-        <img src="logos/mark-inverse.svg" alt="Inverse mark">
-        <span>logos/mark-inverse.svg</span>
-      </div>
-      <div class="card">
-        <img src="logos/lockup.svg" alt="Lockup">
-        <span>logos/lockup.svg</span>
-      </div>
-      <div class="card dark">
-        <img src="logos/lockup-inverse.svg" alt="Lockup inverse">
-        <span>logos/lockup-inverse.svg</span>
-      </div>
-      <div class="card">
-        <img src="logos/wordmark.svg" alt="Wordmark">
-        <span>logos/wordmark.svg</span>
-      </div>
-      <div class="card dark">
-        <img src="logos/wordmark-inverse.svg" alt="Wordmark inverse">
-        <span>logos/wordmark-inverse.svg</span>
-      </div>
+      <aside class="intro-aside">
+        <strong>One stable center, visibly under human authority.</strong>
+        <p>The open C holds a distinct core without enclosing it completely. The system is technical without becoming cold, and confident without implying autonomy.</p>
+        <div class="meaning"><code>cerne</code><span>Portuguese<br>core / heartwood</span></div>
+      </aside>
     </div>
 
-    <h2>Core Color Palette</h2>
-    <div class="palette">
-      <div class="swatch">
-        <div class="swatch-color" style="background: #0071E3;"></div>
-        <div class="swatch-info"><span class="swatch-name">Facet Blue</span>#0071E3</div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-color" style="background: #0F172A;"></div>
-        <div class="swatch-info"><span class="swatch-name">Studio Navy</span>#0F172A</div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-color" style="background: #7CC4FF;"></div>
-        <div class="swatch-info"><span class="swatch-name">Ice Cyan</span>#7CC4FF</div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-color" style="background: #1E2F6B;"></div>
-        <div class="swatch-info"><span class="swatch-name">Cobalt Deep</span>#1E2F6B</div>
-      </div>
-      <div class="swatch">
-        <div class="swatch-color" style="background: #F8FAFC; border-bottom: 1px solid #E2E8F0;"></div>
-        <div class="swatch-info"><span class="swatch-name">Studio Canvas</span>#F8FAFC</div>
-      </div>
+    <div class="notice">
+      <strong>Candidate boundary</strong>
+      <span>Every application below is illustrative brand direction only. Production website, cockpit, code, binaries, packages, installers, and user state are unchanged.</span>
     </div>
 
-    <h2>Icons</h2>
-    <div class="grid" style="grid-template-columns: repeat(4, 1fr);">
-      <div class="card"><img src="icons/favicon.svg" width="32" height="32" alt=""><br><span>favicon.svg</span></div>
-      <div class="card"><img src="icons/app-icon.svg" width="64" height="64" alt=""><br><span>app-icon.svg</span></div>
-      <div class="card"><img src="icons/icon-192.svg" width="64" height="64" alt=""><br><span>icon-192.svg</span></div>
-      <div class="card"><img src="icons/icon-512.svg" width="64" height="64" alt=""><br><span>icon-512.svg</span></div>
-    </div>
-  </div>
+    <section aria-labelledby="identity-title">
+      <div class="section-head">
+        <span class="section-index">01 / Mark</span>
+        <div>
+          <h2 id="identity-title">Open shell. Held core.</h2>
+          <p>Fixed geometry, no visual effects. The primary family is tuned for warm light surfaces; the inverse family uses brighter text-safe tones on Core Night.</p>
+        </div>
+      </div>
+      <div class="asset-grid">
+        <article class="asset-card">
+          <div class="asset-stage"><img src="logos/lockup.svg" alt="Cerne primary lockup"></div>
+          <div class="asset-caption"><span>Primary lockup</span><span>logos/lockup.svg</span></div>
+        </article>
+        <article class="asset-card dark">
+          <div class="asset-stage"><img src="logos/lockup-inverse.svg" alt="Cerne inverse lockup"></div>
+          <div class="asset-caption"><span>Inverse lockup</span><span>logos/lockup-inverse.svg</span></div>
+        </article>
+        <article class="asset-card small">
+          <div class="asset-stage"><img src="logos/mark.svg" alt="Cerne primary mark"></div>
+          <div class="asset-caption"><span>Primary</span><span>mark.svg</span></div>
+        </article>
+        <article class="asset-card small dark">
+          <div class="asset-stage"><img src="logos/mark-inverse.svg" alt="Cerne inverse mark"></div>
+          <div class="asset-caption"><span>Inverse</span><span>mark-inverse.svg</span></div>
+        </article>
+        <article class="asset-card small">
+          <div class="asset-stage"><img src="logos/wordmark.svg" alt="Cerne wordmark"></div>
+          <div class="asset-caption"><span>Wordmark</span><span>wordmark.svg</span></div>
+        </article>
+        <article class="asset-card small dark">
+          <div class="asset-stage"><img src="logos/wordmark-inverse.svg" alt="Cerne inverse wordmark"></div>
+          <div class="asset-caption"><span>Inverse</span><span>wordmark-inverse.svg</span></div>
+        </article>
+        <article class="asset-card small">
+          <div class="asset-stage"><img src="logos/mono-black.svg" alt="Cerne black monochrome mark"></div>
+          <div class="asset-caption"><span>Mono black</span><span>mono-black.svg</span></div>
+        </article>
+        <article class="asset-card small dark">
+          <div class="asset-stage"><img src="logos/mono-white.svg" alt="Cerne white monochrome mark"></div>
+          <div class="asset-caption"><span>Mono white</span><span>mono-white.svg</span></div>
+        </article>
+      </div>
+    </section>
+
+    <section aria-labelledby="system-title">
+      <div class="section-head">
+        <span class="section-index">02 / System</span>
+        <div>
+          <h2 id="system-title">Warm field, cobalt signal.</h2>
+          <p>Canvas keeps the product grounded. Cobalt identifies action and selection. Core Night creates a focused technical mode without defaulting to terminal aesthetics.</p>
+        </div>
+      </div>
+      <div class="palette" aria-label="Cerne color palette">
+        <div class="swatch"><div class="swatch-color" style="background:#3D63D8"></div><div class="swatch-copy"><strong>Cobalt</strong><code>#3D63D8</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#2749AD"></div><div class="swatch-copy"><strong>Deep</strong><code>#2749AD</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#9CABFF"></div><div class="swatch-copy"><strong>Dark-surface Text</strong><code>#9CABFF</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#E8ECFF"></div><div class="swatch-copy"><strong>Soft</strong><code>#E8ECFF</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#111215"></div><div class="swatch-copy"><strong>Core Night</strong><code>#111215</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#F7F5EF"></div><div class="swatch-copy"><strong>Canvas</strong><code>#F7F5EF</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#FFFFFF"></div><div class="swatch-copy"><strong>Surface</strong><code>#FFFFFF</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#171719"></div><div class="swatch-copy"><strong>Ink</strong><code>#171719</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#666976"></div><div class="swatch-copy"><strong>Muted</strong><code>#666976</code></div></div>
+        <div class="swatch"><div class="swatch-color" style="background:#D9D7D0"></div><div class="swatch-copy"><strong>Line</strong><code>#D9D7D0</code></div></div>
+      </div>
+      <div class="type-grid">
+        <div class="type-card">
+          <span class="mono-label">Inter / system sans fallback</span>
+          <div class="type-sample">Useful stays visible.</div>
+          <p>Compact, plain-spoken typography gives the system presence without competing with the work in the cockpit.</p>
+        </div>
+        <div class="type-card">
+          <span class="mono-label">Identifiers / monospace</span>
+          <div class="mono-sample">session/local-07<br>model/provider<br>tool.awaiting-approval<br>runtime.in-process</div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="sizes-title">
+      <div class="section-head">
+        <span class="section-index">03 / Scale</span>
+        <div>
+          <h2 id="sizes-title">Still a C at sixteen.</h2>
+          <p>The opening and separate core remain the dominant read at interface sizes. Use the supplied icon tile where the environment needs a contained silhouette.</p>
+        </div>
+      </div>
+      <div class="size-board">
+        <div class="size-field">
+          <span class="mono-label">Light surface / primary mark</span>
+          <div class="size-row">
+            <div class="size-test" style="--size:64px"><img src="logos/mark.svg" alt="Cerne mark at 64 pixels"><span>64 px</span></div>
+            <div class="size-test" style="--size:32px"><img src="logos/mark.svg" alt="Cerne mark at 32 pixels"><span>32 px</span></div>
+            <div class="size-test" style="--size:16px"><img src="logos/mark.svg" alt="Cerne mark at 16 pixels"><span>16 px</span></div>
+          </div>
+        </div>
+        <div class="size-field dark">
+          <span class="mono-label">Core Night / favicon tile</span>
+          <div class="size-row">
+            <div class="size-test" style="--size:64px"><img src="icons/favicon.svg" alt="Cerne favicon at 64 pixels"><span>64 px</span></div>
+            <div class="size-test" style="--size:32px"><img src="icons/favicon.svg" alt="Cerne favicon at 32 pixels"><span>32 px</span></div>
+            <div class="size-test" style="--size:16px"><img src="icons/favicon.svg" alt="Cerne favicon at 16 pixels"><span>16 px</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="icon-strip">
+        <div class="icon-card"><img src="icons/favicon.svg" alt="Cerne favicon"><code>favicon.svg</code></div>
+        <div class="icon-card"><img src="icons/app-icon.svg" alt="Cerne application icon"><code>app-icon.svg</code></div>
+        <div class="icon-card"><img src="icons/icon-192.svg" alt="Cerne 192 icon"><code>icon-192.svg</code></div>
+        <div class="icon-card"><img src="icons/icon-512.svg" alt="Cerne 512 icon"><code>icon-512.svg</code></div>
+        <div class="icon-card"><img src="icons/maskable.svg" alt="Cerne maskable icon"><code>maskable.svg</code></div>
+      </div>
+    </section>
+
+    <section aria-labelledby="social-title">
+      <div class="section-head">
+        <span class="section-index">04 / Social</span>
+        <div>
+          <h2 id="social-title">The proposition, not a placeholder.</h2>
+          <p>The default social card carries the approved positioning and descriptor as visible text. It does not imply a hosted service or shipped consumer integration.</p>
+        </div>
+      </div>
+      <div class="social-stage">
+        <img src="og/og-default.png" alt="Cerne default social preview">
+      </div>
+      <div class="asset-links"><a href="og/og-default.svg">Editable SVG master</a><a href="og/og-default.png">1200 x 630 PNG</a></div>
+    </section>
+
+    <section aria-labelledby="website-title">
+      <div class="section-head">
+        <span class="section-index">05 / Website</span>
+        <div>
+          <h2 id="website-title">Public website direction.</h2>
+          <p>A light, editorial entry point. Product language stays factual while the open-C construction becomes the visual focus.</p>
+        </div>
+      </div>
+      <div class="mock-wrap">
+        <div class="mock-note"><strong>Illustrative brand application</strong><span>Public website header and hero / production website unchanged</span></div>
+        <div class="browser">
+          <div class="browser-bar" aria-hidden="true"><span class="browser-dot"></span><span class="browser-dot"></span><span class="browser-dot"></span></div>
+          <div class="site-header">
+            <img src="logos/lockup.svg" alt="Cerne">
+            <div class="site-nav"><span>Product</span><span>Runtime</span><span>Principles</span><span class="site-button">View source</span></div>
+          </div>
+          <div class="site-hero">
+            <div class="site-hero-copy">
+              <span class="mock-label">Local-first / human authority</span>
+              <h3>The local agent core that stays useful when the shell changes.</h3>
+              <p>A complete local-first agent application with a headed web cockpit and an embeddable in-process Go runtime.</p>
+              <div class="site-actions"><span class="primary">Explore the cockpit</span><span>Read the runtime guide</span></div>
+            </div>
+            <div class="core-visual" aria-label="Cerne open-C mark construction">
+              <img src="logos/mark.svg" alt="Cerne mark">
+              <span class="core-tag">shell / core</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section aria-labelledby="cockpit-title">
+      <div class="section-head">
+        <span class="section-index">06 / Cockpit</span>
+        <div>
+          <h2 id="cockpit-title">Control remains explicit.</h2>
+          <p>Light and dark directions use the same hierarchy: identity in the header, stable navigation in the sidebar, and human approval visibly inside the work surface.</p>
+        </div>
+      </div>
+      <div class="mock-wrap">
+        <div class="mock-note"><strong>Illustrative brand applications</strong><span>Cockpit header and sidebar, light and dark / production cockpit unchanged</span></div>
+        <div class="cockpit-grid">
+          <article class="cockpit">
+            <div class="cockpit-top"><img src="logos/lockup.svg" alt="Cerne"><span class="cockpit-status"><span class="status-dot"></span>local runtime</span></div>
+            <div class="cockpit-shell">
+              <nav class="cockpit-side" aria-label="Illustrative light cockpit navigation">
+                <span class="side-heading">Workspace</span>
+                <div class="side-item active"><span class="side-icon"></span><span class="side-label">Sessions</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Models</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Providers</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Tools</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Skills</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Modules</span></div>
+              </nav>
+              <div class="cockpit-main">
+                <span class="workspace-label">Session / local-07</span>
+                <h3>Review before the tool continues.</h3>
+                <div class="chat-line">Inspect the current workspace and summarize the change.</div>
+                <div class="agent-line">The workspace is ready. One tool action needs your approval before it can continue.</div>
+                <div class="approval"><div><strong>Human approval required</strong><span>tool / read workspace</span></div><span class="approval-button">Review action</span></div>
+              </div>
+            </div>
+            <div class="cockpit-caption">Light direction / warm workspace canvas and cobalt action signal</div>
+          </article>
+
+          <article class="cockpit dark">
+            <div class="cockpit-top"><img src="logos/lockup-inverse.svg" alt="Cerne"><span class="cockpit-status"><span class="status-dot"></span>local runtime</span></div>
+            <div class="cockpit-shell">
+              <nav class="cockpit-side" aria-label="Illustrative dark cockpit navigation">
+                <span class="side-heading">Workspace</span>
+                <div class="side-item active"><span class="side-icon"></span><span class="side-label">Sessions</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Models</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Providers</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Tools</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Skills</span></div>
+                <div class="side-item"><span class="side-icon"></span><span class="side-label">Modules</span></div>
+              </nav>
+              <div class="cockpit-main">
+                <span class="workspace-label">Session / local-07</span>
+                <h3>Review before the tool continues.</h3>
+                <div class="chat-line">Inspect the current workspace and summarize the change.</div>
+                <div class="agent-line">The workspace is ready. One tool action needs your approval before it can continue.</div>
+                <div class="approval"><div><strong>Human approval required</strong><span>tool / read workspace</span></div><span class="approval-button">Review action</span></div>
+              </div>
+            </div>
+            <div class="cockpit-caption">Dark direction / Core Night field with accessible Soft and dark-surface text</div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="footer">
+      <div>
+        <img src="logos/lockup.svg" alt="Cerne">
+        <p>Brand-only candidate. The visual board is a decision aid, not runtime evidence. Compatibility identifiers and production surfaces remain unchanged pending separately approved implementation work.</p>
+      </div>
+      <code>brand/preview.html</code>
+    </footer>
+  </main>
 </body>
 </html>

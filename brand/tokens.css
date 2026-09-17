@@ -1,13 +1,60 @@
 :root {
-  --facet-color-blue: #0071e3;
-  --facet-color-cobalt: #1e2f6b;
-  --facet-color-ice: #7cc4ff;
-  --facet-color-navy: #0f172a;
-  --facet-color-canvas: #f8fafc;
-  --facet-color-surface: #ffffff;
-  --facet-color-ink: #0f172a;
-  --facet-color-muted: #64748b;
-  --facet-color-line: #e2e8f0;
-  --facet-font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Inter", system-ui, sans-serif;
-  --facet-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Monaco, Consolas, monospace;
+  --cerne-cobalt: #3d63d8;
+  --cerne-deep: #2749ad;
+  --cerne-dark-surface-text: #9cabff;
+  --cerne-soft: #e8ecff;
+  --cerne-core-night: #111215;
+  --cerne-canvas: #f7f5ef;
+  --cerne-surface: #ffffff;
+  --cerne-ink: #171719;
+  --cerne-muted: #666976;
+  --cerne-line: #d9d7d0;
+
+  --cerne-bg: var(--cerne-canvas);
+  --cerne-surface-raised: var(--cerne-surface);
+  --cerne-text: var(--cerne-ink);
+  --cerne-text-muted: var(--cerne-muted);
+  --cerne-border: var(--cerne-line);
+  --cerne-brand: var(--cerne-cobalt);
+  --cerne-brand-strong: var(--cerne-deep);
+  --cerne-on-brand: var(--cerne-surface);
+  --cerne-focus-ring: var(--cerne-cobalt);
+
+  --cerne-font-sans: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --cerne-font-mono: ui-monospace, "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+  --cerne-font-weight-regular: 400;
+  --cerne-font-weight-medium: 500;
+  --cerne-font-weight-semibold: 600;
+  --cerne-font-weight-display: 680;
+
+  --cerne-mark-viewbox: 0 0 100 100;
+  --cerne-mark-outer-path: "M72 20 H36 C27.16 20 20 27.16 20 36 V64 C20 72.84 27.16 80 36 80 H72 V68 H38 C34.69 68 32 65.31 32 62 V38 C32 34.69 34.69 32 38 32 H72 Z";
+  --cerne-mark-inner-path: "M66 38 H46 C41.58 38 38 41.58 38 46 V54 C38 58.42 41.58 62 46 62 H66 V53 H48 C46.9 53 46 52.1 46 51 V49 C46 47.9 46.9 47 48 47 H66 Z";
+  --cerne-mark-inner-opacity: 0.48;
+  --cerne-mark-core-x: 72;
+  --cerne-mark-core-y: 44;
+  --cerne-mark-core-width: 12;
+  --cerne-mark-core-height: 12;
+  --cerne-mark-core-radius: 2.5;
+  --cerne-mark-clear-space: 12%;
+  --cerne-mark-min-digital: 16px;
+  --cerne-lockup-min-width: 112px;
+  --cerne-wordmark-min-width: 72px;
+
+  --cerne-motion-fast: 160ms;
+  --cerne-motion-base: 220ms;
+  --cerne-motion-easing: cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+[data-cerne-theme="dark"] {
+  --cerne-bg: var(--cerne-core-night);
+  --cerne-surface-raised: var(--cerne-ink);
+  --cerne-surface-higher: var(--cerne-ink);
+  --cerne-surface-selected: var(--cerne-deep);
+  --cerne-text: var(--cerne-soft);
+  --cerne-text-muted: var(--cerne-dark-surface-text);
+  --cerne-border: var(--cerne-muted);
+  --cerne-brand: var(--cerne-dark-surface-text);
+  --cerne-brand-strong: var(--cerne-soft);
+  --cerne-on-brand: var(--cerne-core-night);
 }

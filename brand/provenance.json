@@ -1,0 +1,95 @@
+{
+  "identity": {
+    "publicName": "Cerne",
+    "visualWordmark": "cerne",
+    "meaning": "Portuguese for core or heartwood",
+    "basis": [
+      "Operator-selected Cerne identity brief",
+      "Current repository OBJECTIVE product truth"
+    ],
+    "selection": "operator-approved"
+  },
+  "candidateBoundary": {
+    "scope": "brand-only",
+    "productionCodeChanged": false,
+    "productionSurfacesChanged": false,
+    "compatibilityIdentifiersMigrated": false
+  },
+  "assetInventory": {
+    "guidance": [
+      "BRAND.md",
+      "README.md",
+      "LICENSES.md"
+    ],
+    "tokens": [
+      "tokens.json",
+      "tokens.css"
+    ],
+    "review": [
+      "preview.html",
+      "check.mjs"
+    ],
+    "logos": [
+      "logos/mark.svg",
+      "logos/mark-inverse.svg",
+      "logos/lockup.svg",
+      "logos/lockup-inverse.svg",
+      "logos/wordmark.svg",
+      "logos/wordmark-inverse.svg",
+      "logos/mono-black.svg",
+      "logos/mono-white.svg"
+    ],
+    "icons": [
+      "icons/favicon.svg",
+      "icons/app-icon.svg",
+      "icons/icon-192.svg",
+      "icons/icon-512.svg",
+      "icons/maskable.svg"
+    ],
+    "social": [
+      "og/og-default.svg",
+      "og/og-default.png"
+    ]
+  },
+  "plannedConsumerProjection": [
+    {
+      "target": "public website header, hero, metadata, and social cards",
+      "sources": [
+        "logos/lockup.svg",
+        "logos/lockup-inverse.svg",
+        "icons/favicon.svg",
+        "og/og-default.png"
+      ],
+      "status": "planned-not-applied"
+    },
+    {
+      "target": "headed cockpit header, sidebar, themes, and browser metadata",
+      "sources": [
+        "logos/mark.svg",
+        "logos/mark-inverse.svg",
+        "tokens.json",
+        "tokens.css"
+      ],
+      "status": "planned-not-applied"
+    },
+    {
+      "target": "desktop app and PWA packaging",
+      "sources": [
+        "icons/app-icon.svg",
+        "icons/icon-192.svg",
+        "icons/icon-512.svg",
+        "icons/maskable.svg"
+      ],
+      "status": "planned-not-applied"
+    },
+    {
+      "target": "repository, package, release, and social presentation",
+      "sources": [
+        "logos/lockup.svg",
+        "icons/app-icon.svg",
+        "og/og-default.png"
+      ],
+      "status": "planned-not-applied"
+    }
+  ]
+}
