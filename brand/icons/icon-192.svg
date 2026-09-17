@@ -1,20 +1,9 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" viewBox="0 0 100 100" role="img" aria-label="Facet Studio 192 pixel icon">
-  <defs>
-    <linearGradient id="i192-a" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#7cc4ff"/>
-      <stop offset="1" stop-color="#3e5db9"/>
-    </linearGradient>
-    <linearGradient id="i192-b" x1="1" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#5f8fe8"/>
-      <stop offset="1" stop-color="#2b3f86"/>
-    </linearGradient>
-  </defs>
-  <rect width="100" height="100" rx="22" fill="#0F172A"/>
-  <g transform="translate(18, 18)">
-    <polygon points="32,4 58,22 32,60 6,22" fill="url(#i192-a)"/>
-    <polygon points="32,4 58,22 32,26" fill="url(#i192-b)" opacity="0.85"/>
-    <polygon points="32,4 6,22 32,26" fill="#8fd0ff" opacity="0.55"/>
-    <polygon points="6,22 32,26 32,60" fill="url(#i192-b)" opacity="0.7"/>
-    <polygon points="58,22 32,26 32,60" fill="#1e2f6b" opacity="0.55"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192 192" role="img" aria-labelledby="title">
+  <title id="title">Cerne</title>
+  <rect width="192" height="192" rx="42" fill="#111215"/>
+  <g transform="translate(19.2 19.2) scale(1.536)">
+    <path d="M72 20 H36 C27.16 20 20 27.16 20 36 V64 C20 72.84 27.16 80 36 80 H72 V68 H38 C34.69 68 32 65.31 32 62 V38 C32 34.69 34.69 32 38 32 H72 Z" fill="#9CABFF"/>
+    <path d="M66 38 H46 C41.58 38 38 41.58 38 46 V54 C38 58.42 41.58 62 46 62 H66 V53 H48 C46.9 53 46 52.1 46 51 V49 C46 47.9 46.9 47 48 47 H66 Z" fill="#E8ECFF" opacity=".48"/>
+    <rect x="72" y="44" width="12" height="12" rx="2.5" fill="#E8ECFF"/>
   </g>
 </svg>
